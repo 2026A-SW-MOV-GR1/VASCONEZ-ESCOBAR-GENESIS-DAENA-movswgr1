@@ -1,0 +1,10 @@
+<resources>
+
+    <!-- OBLIGATORIOS -->
+    <string name="app_name">AppMoviles</string>
+    <string name="title_activity_kimera">AppMoviles</string>
+
+    <!-- TU TEXTO -->
+    <string name="saludo">Esto es esta en espanol</string>
+
+</resources>

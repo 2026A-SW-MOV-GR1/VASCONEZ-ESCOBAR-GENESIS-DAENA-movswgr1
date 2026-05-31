@@ -1,0 +1,63 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd"
+    navigatingTo="navigatingTo">
+
+    <ActionBar title="API REST" />
+
+    <ScrollView>
+
+        <StackLayout padding="20" spacing="15">
+
+            <ActivityIndicator busy="{{ isLoadingGet || isLoadingPut }}" visibility="{{ isLoadingGet || isLoadingPut ? 'visible' : 'collapse' }}" horizontalAlignment="center" />
+
+            <Label text="{{ statusMessage }}" textWrap="true" />
+
+            <Label
+                text="ID del Post"
+                fontWeight="bold" />
+
+            <TextField
+                id="txtId"
+                hint="Ingrese un ID (1-100)"
+                keyboardType="number"
+                text="{{ txtId }}"
+                enabled="{{ !isLoadingGet }}" />
+
+            <Button
+                id="btnObtener"
+                text="Obtener Post"
+                tap="obtenerPost"
+                enabled="{{ !isLoadingGet }}" />
+
+            <Label
+                text="Título"
+                fontWeight="bold" />
+
+            <TextView
+                id="txtTitulo"
+                editable="{{ canEditPost }}"
+                enabled="{{ canEditPost }}"
+                text="{{ txtTitulo }}"
+                height="80" />
+
+            <Label
+                text="Contenido"
+                fontWeight="bold" />
+
+            <TextView
+                id="txtBody"
+                editable="{{ canEditPost }}"
+                enabled="{{ canEditPost }}"
+                text="{{ txtBody }}"
+                height="150" />
+
+            <Button
+                id="btnActualizar"
+                text="Actualizar Post"
+                tap="actualizarPost"
+                enabled="{{ canUpdatePost && !isLoadingPut }}" />
+
+        </StackLayout>
+
+    </ScrollView>
+
+</Page>

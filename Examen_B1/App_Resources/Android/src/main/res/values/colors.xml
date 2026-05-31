@@ -1,0 +1,12 @@
+<resources>
+
+    <!-- YA EXISTEN -->
+    <color name="ns_primary">#F5F5F5</color>
+    <color name="ns_primaryDark">#757575</color>
+    <color name="ns_accent">#65ADF1</color>
+
+    <!-- AGREGA ESTO -->
+    <color name="colorTexto">#FF0000</color>
+    <color name="colorFondo">#FFFF00</color>
+
+</resources>

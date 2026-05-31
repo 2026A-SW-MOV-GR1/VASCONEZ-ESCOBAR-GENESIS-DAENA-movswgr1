@@ -1,0 +1,55 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd"
+    navigatingTo="navigatingTo">
+
+    <ActionBar title="Usuario" />
+
+    <ScrollView>
+
+        <StackLayout
+            padding="20"
+            spacing="15">
+
+            <Label
+                text="Nombre"
+                fontWeight="bold" />
+
+            <TextField
+                id="txtNombre"
+                hint="Ingrese nombre"
+                text="{{ nombre }}" />
+
+            <Label
+                text="Profesión"
+                fontWeight="bold" />
+
+            <TextField
+                id="txtProfesion"
+                hint="Ingrese profesión"
+                text="{{ profesion }}" />
+
+            <Label
+                text="Activo"
+                fontWeight="bold" />
+
+            <Switch
+                id="switchActivo"
+                checked="{{ activo }}" />
+
+            <Label
+                text="Fecha de registro"
+                fontWeight="bold" />
+
+            <DatePicker
+                id="datePicker"
+                date="{{ fecha }}" />
+
+            <Button
+                id="btnGuardar"
+                text="Guardar Usuario"
+                tap="guardarUsuario" />
+
+        </StackLayout>
+
+    </ScrollView>
+
+</Page>

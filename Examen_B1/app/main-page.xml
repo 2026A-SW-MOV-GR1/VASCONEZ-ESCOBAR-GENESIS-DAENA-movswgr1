@@ -1,0 +1,70 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd"
+    navigatingTo="navigatingTo">
+
+    <ActionBar title="CRUD Visual" />
+
+    <StackLayout>
+
+        <Button
+            text="➕ Nuevo Usuario"
+            tap="nuevoUsuario"
+            margin="10" />
+
+        <Button
+            text="🌐 API REST"
+            tap="abrirApi"
+            margin="10" />
+
+        <Button
+            text="🔐 Secretos"
+            tap="abrirSecretos"
+            margin="10" />
+
+        <StackLayout margin="10" spacing="8">
+            <Label text="Persistencia" fontWeight="bold" />
+            <Switch id="switchPersistencia" checked="{{ isNoSql }}" checkedChange="onPersistenceChange" />
+            <Label text="{{ persistenceLabel }}" color="{{ persistenceColor }}" fontWeight="bold" />
+        </StackLayout>
+
+        <ListView items="{{ usuarios }}">
+            <ListView.itemTemplate>
+
+                <GridLayout
+                    columns="60, *, auto, auto"
+                    padding="10">
+
+                    <Label
+                        text="👤"
+                        col="0"
+                        fontSize="30" />
+
+                    <StackLayout col="1">
+
+                        <Label
+                            text="{{ nombre }}"
+                            fontWeight="bold" />
+
+                        <Label
+                            text="{{ profesion }}"
+                            fontSize="12" />
+
+                    </StackLayout>
+
+                    <Button
+                        text="Editar"
+                        col="2"
+                        tap="editarUsuario" />
+
+                    <Button
+                        text="Eliminar"
+                        col="3"
+                        tap="eliminarUsuario" />
+
+                </GridLayout>
+
+            </ListView.itemTemplate>
+        </ListView>
+
+    </StackLayout>
+
+</Page>

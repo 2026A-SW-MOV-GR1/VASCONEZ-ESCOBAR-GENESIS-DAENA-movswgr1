@@ -1,0 +1,19 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
+    <ActionBar title="Intents Salientes" />
+
+    <ScrollView>
+        <StackLayout class="p-20" spacing="12">
+            <Label text="Número telefónico" class="h2" />
+            <TextField id="phone" hint="Ingrese número telefónico" keyboardType="phone" text="{{ phone }}" />
+
+            <Button text="Iniciar Dial" tap="{{ onStartDial }}" class="-primary" />
+
+            <Button text="Tomar Foto" tap="{{ onTakePhoto }}" />
+
+            <Label text="Miniatura de la foto:" class="h2" />
+            <Image id="photoThumb" src="{{ photoSrc }}" width="200" height="200" stretch="aspectFill" />
+
+            <Button text="Ir a Intents Entrantes" tap="{{ openIncoming }}" />
+        </StackLayout>
+    </ScrollView>
+</Page>

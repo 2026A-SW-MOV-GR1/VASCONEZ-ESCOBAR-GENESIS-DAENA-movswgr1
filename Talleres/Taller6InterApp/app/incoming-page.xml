@@ -1,0 +1,19 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
+    <ActionBar title="Intents Entrantes" />
+
+    <ScrollView>
+        <StackLayout class="p-20" spacing="12">
+            <Label text="Texto recibido:" class="h2" />
+            <Label text="{{ receivedText }}" textWrap="true" />
+
+            <Label text="Imagen compartida:" class="h2" />
+            <Image src="{{ imageSrc }}" width="200" height="200" stretch="aspectFit" />
+
+            <Label text="Estado:" class="h2" />
+            <Label text="{{ status }}" />
+
+            <Button text="Regresar" tap="{{ goBack }}" />
+        </StackLayout>
+    </ScrollView>
+</Page>
+

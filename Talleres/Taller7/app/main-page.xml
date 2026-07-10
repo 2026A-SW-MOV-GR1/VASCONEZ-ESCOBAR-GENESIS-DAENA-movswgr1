@@ -1,0 +1,26 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page-container">
+    <ActionBar title="Taller 7: Batalla del Estado" class="action-bar" />
+
+    <ScrollView>
+        <StackLayout class="main-container" verticalAlignment="center" horizontalAlignment="center">
+            <StackLayout class="counter-card">
+                <!-- Encabezado del Taller -->
+                <Label text="TALLER 7" class="card-subtitle" />
+                <Label text="Contador en NativeScript" class="card-main-title" />
+                
+                <!-- Contenedor del Valor del Contador -->
+                <FlexboxLayout class="counter-display-container" justifyContent="center" alignItems="center">
+                    <Label text="{{ counter }}" class="counter-value" />
+                </FlexboxLayout>
+                
+                <!-- Botón de Acción "+1" -->
+                <Button text="+1" tap="{{ increment }}" class="btn-increment" />
+                
+                <!-- Mensaje Informativo -->
+                <Label text="El estado del contador se almacena localmente y persistirá automáticamente ante cambios de orientación de pantalla o reinicios de la aplicación." class="card-footer" textWrap="true" />
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</Page>
+
+

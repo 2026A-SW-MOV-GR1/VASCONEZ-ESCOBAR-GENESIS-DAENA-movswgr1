@@ -1,0 +1,24 @@
+<AbsoluteLayout xmlns="http://schemas.nativescript.org/tns.xsd"
+    class="modal-overlay"
+    visibility="{{ isCityModalVisible ? 'visible' : 'collapsed' }}"
+    tap="{{ toggleCityModal }}">
+    <FlexboxLayout class="modal-wrapper" width="100%" height="100%">
+        <StackLayout class="modal-box" tap="onModalClick">
+            <StackLayout class="modal-header">
+                <Label text="Ciudad" class="modal-title" />
+            </StackLayout>
+            <ScrollView class="modal-scroll">
+                <StackLayout>
+                    <Repeater items="{{ cities }}">
+                        <Repeater.itemTemplate>
+                            <StackLayout class="city-item-row" tap="onCityItemTap">
+                                <Label text="{{ $value }}" class="city-item-text" />
+                                <StackLayout class="city-separator" />
+                            </StackLayout>
+                        </Repeater.itemTemplate>
+                    </Repeater>
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
+    </FlexboxLayout>
+</AbsoluteLayout>

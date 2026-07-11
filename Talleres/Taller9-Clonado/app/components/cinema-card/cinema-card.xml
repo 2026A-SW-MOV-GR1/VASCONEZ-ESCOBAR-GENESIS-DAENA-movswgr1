@@ -1,0 +1,8 @@
+<StackLayout xmlns="http://schemas.nativescript.org/tns.xsd"
+    class="cinema-card card-tap">
+    <Image src="{{ imageUrl }}" loadMode="async" class="cinema-card-img" stretch="aspectFill" />
+    <StackLayout class="cinema-info-container">
+        <Label text="{{ name }}" class="cinema-name" />
+        <Label text="{{ address }}" class="cinema-address" textWrap="true" />
+    </StackLayout>
+</StackLayout>

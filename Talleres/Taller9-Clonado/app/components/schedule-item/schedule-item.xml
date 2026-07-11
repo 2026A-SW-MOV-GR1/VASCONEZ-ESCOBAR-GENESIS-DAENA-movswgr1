@@ -1,0 +1,6 @@
+<GridLayout xmlns="http://schemas.nativescript.org/tns.xsd"
+    columns="*, auto"
+    class="schedule-row card-tap">
+    <Label col="0" text="{{ time + ' - ' + room }}" class="schedule-time-text" />
+    <Label col="1" text="🛒" class="schedule-cart-icon" />
+</GridLayout>

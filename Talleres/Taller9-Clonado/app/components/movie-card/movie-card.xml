@@ -1,0 +1,22 @@
+<GridLayout xmlns="http://schemas.nativescript.org/tns.xsd"
+    columns="auto, *"
+    rows="auto"
+    class="movie-list-card card-tap">
+    <StackLayout col="0" class="movie-poster-container">
+        <Image src="{{ posterUrl }}" loadMode="async" class="movie-poster-img" stretch="aspectFill" />
+        <Label text="{{ label }}"
+            class="{{ label === 'PREVENTA' ? 'movie-banner movie-banner-preventa' : (label === 'ESTRENO' ? 'movie-banner movie-banner-estreno' : 'movie-banner movie-banner-prox') }}"
+            visibility="{{ label ? 'visible' : 'collapsed' }}"
+            verticalAlignment="bottom" />
+    </StackLayout>
+    <StackLayout col="1" class="p-l-10">
+        <Label text="{{ title }}" class="movie-title-yellow" textWrap="true" />
+        <Label text="{{ englishTitle }}" class="movie-title-english" textWrap="true" />
+        <GridLayout columns="auto, *" rows="auto, auto" class="m-t-5">
+            <Label row="0" col="0" text="Idioma: " class="movie-detail-label" />
+            <Label row="0" col="1" text="{{ language }}" class="movie-detail-val" />
+            <Label row="1" col="0" text="Censura: " class="movie-detail-label" />
+            <Label row="1" col="1" text="{{ rating }}" class="movie-detail-val" />
+        </GridLayout>
+    </StackLayout>
+</GridLayout>

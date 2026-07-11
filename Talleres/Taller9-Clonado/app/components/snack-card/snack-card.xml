@@ -1,0 +1,11 @@
+<GridLayout xmlns="http://schemas.nativescript.org/tns.xsd"
+    columns="auto, *"
+    rows="auto"
+    class="bar-product-card card-tap">
+    <Image col="0" src="{{ imageUrl }}" loadMode="async" class="bar-product-img" stretch="aspectFill" />
+    <StackLayout col="1" class="p-l-15">
+        <Label text="{{ name }}" class="bar-product-name" />
+        <Label text="{{ description }}" class="bar-product-desc" textWrap="true" />
+        <Label text="{{ '$' + price.toFixed(2) }}" class="bar-product-price" />
+    </StackLayout>
+</GridLayout>

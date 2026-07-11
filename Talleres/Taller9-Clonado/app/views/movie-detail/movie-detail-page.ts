@@ -229,3 +229,25 @@ export function onNavigatingTo(args: NavigatedData) {
 
   page.bindingContext = new MovieDetailViewModel(movieId);
 }
+
+// ─── Module-level handlers for Repeater item taps ────────────────────────────
+
+function getVM(): MovieDetailViewModel | null {
+  const frame = Frame.topmost();
+  if (!frame || !frame.currentPage) return null;
+  return frame.currentPage.bindingContext as MovieDetailViewModel;
+}
+
+export function onScheduleTap(args: any) {
+  const vm = getVM();
+  if (vm) vm.onScheduleTap(args);
+}
+
+export function selectCity(args: any) {
+  const vm = getVM();
+  if (vm) vm.selectCity(args);
+}
+
+export function onModalClick(args: any) {
+  // Absorb tap — prevent bubbling to overlay
+}

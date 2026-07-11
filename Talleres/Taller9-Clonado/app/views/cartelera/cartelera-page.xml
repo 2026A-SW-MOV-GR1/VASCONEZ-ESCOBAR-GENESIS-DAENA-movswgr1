@@ -1,6 +1,6 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo" actionBarHidden="true">
     <GridLayout rows="auto, auto, *, auto" columns="*">
-        
+
         <!-- HEADER (Row 0) -->
         <GridLayout row="0" columns="auto, *, auto, auto" class="app-header" verticalAlignment="center">
             <!-- Left Side Logo + Title -->
@@ -13,7 +13,7 @@
 
             <!-- Search Icon (Only visible on Peliculas tab) -->
             <Button col="2" text="🔍" tap="{{ toggleSearch }}" class="header-action-btn" visibility="{{ currentTab === 0 ? 'visible' : 'collapsed' }}" />
-            
+
             <!-- List/Grid Toggle (Only visible on Peliculas tab) -->
             <Button col="3" text="{{ isGridView ? '▤' : '⊞' }}" tap="{{ toggleViewMode }}" class="header-action-btn" visibility="{{ currentTab === 0 ? 'visible' : 'collapsed' }}" />
         </GridLayout>
@@ -26,7 +26,7 @@
                 <Label text="Películas" class="tab-label" />
                 <StackLayout class="{{ currentTab === 0 ? 'tab-active-indicator' : 'tab-inactive-indicator' }}" />
             </StackLayout>
-            
+
             <!-- Tab 1: Cines -->
             <StackLayout col="1" tap="{{ selectTabCines }}" class="{{ currentTab === 1 ? 'tab-item tab-item-active' : 'tab-item' }}">
                 <Label text="🏛️" class="tab-icon" />
@@ -72,7 +72,7 @@
 
         <!-- MAIN DYNAMIC CONTENT (Row 2) -->
         <GridLayout row="2" class="content-area">
-            
+
             <!-- TAB 0: PELÍCULAS (Cartelera) -->
             <GridLayout rows="auto, auto, *" visibility="{{ currentTab === 0 ? 'visible' : 'collapsed' }}">
                 <!-- City Filter Bar & Search bar -->
@@ -94,24 +94,24 @@
                                     <StackLayout />
                                 </Repeater.itemsLayout>
                                 <Repeater.itemTemplate>
-                                    <GridLayout columns="auto, *" rows="auto" class="movie-list-card" tap="{{ $parents['Page'].bindingContext.onMovieTap }}" movieId="{{ id }}">
+                                    <GridLayout columns="auto, *" rows="auto" class="movie-list-card" tap="onMovieTap" movieId="{{ id }}">
                                         <!-- Poster column -->
                                         <StackLayout col="0" class="movie-poster-container">
                                             <Image src="{{ posterUrl }}" loadMode="async" class="movie-poster-img" stretch="aspectFill" />
                                             <!-- Label Ribbon -->
                                             <Label text="{{ label }}" class="{{ label === 'PREVENTA' ? 'movie-banner movie-banner-preventa' : (label === 'ESTRENO' ? 'movie-banner movie-banner-estreno' : 'movie-banner movie-banner-prox') }}" visibility="{{ label ? 'visible' : 'collapsed' }}" verticalAlignment="bottom" />
                                         </StackLayout>
-                                        
+
                                         <!-- Info column -->
                                         <StackLayout col="1" class="p-l-10">
                                             <Label text="{{ title }}" class="movie-title-yellow" textWrap="true" />
                                             <Label text="{{ englishTitle }}" class="movie-title-english" textWrap="true" />
-                                            
+
                                             <!-- Details table -->
                                             <GridLayout columns="auto, *" rows="auto, auto" class="m-t-5">
                                                 <Label row="0" col="0" text="Idioma: " class="movie-detail-label" />
                                                 <Label row="0" col="1" text="{{ language }}" class="movie-detail-val" />
-                                                
+
                                                 <Label row="1" col="0" text="Censura: " class="movie-detail-label" />
                                                 <Label row="1" col="1" text="{{ rating }}" class="movie-detail-val" />
                                             </GridLayout>
@@ -124,10 +124,13 @@
 
                     <!-- 2. GRID VIEW (3 Columns) -->
                     <ScrollView visibility="{{ isGridView ? 'visible' : 'collapsed' }}">
-                        <WrapLayout>
+                        <WrapLayout orientation="horizontal">
                             <Repeater items="{{ filteredMovies }}">
+                                <Repeater.itemsLayout>
+                                    <WrapLayout orientation="horizontal" />
+                                </Repeater.itemsLayout>
                                 <Repeater.itemTemplate>
-                                    <StackLayout class="movie-grid-card" width="30%" tap="{{ $parents['Page'].bindingContext.onMovieTap }}" movieId="{{ id }}">
+                                    <StackLayout class="movie-grid-card" width="{{ gridCardWidth }}" tap="onMovieTap" movieId="{{ id }}">
                                         <StackLayout class="movie-grid-poster-container">
                                             <Image src="{{ posterUrl }}" loadMode="async" class="movie-grid-poster-img" stretch="aspectFill" />
                                             <Label text="{{ label }}" class="{{ label === 'PREVENTA' ? 'movie-banner movie-banner-preventa' : (label === 'ESTRENO' ? 'movie-banner movie-banner-estreno' : 'movie-banner movie-banner-prox') }}" visibility="{{ label ? 'visible' : 'collapsed' }}" verticalAlignment="bottom" />
@@ -151,7 +154,7 @@
                                 <StackLayout />
                             </Repeater.itemsLayout>
                             <Repeater.itemTemplate>
-                                <StackLayout class="cinema-card" tap="{{ $parents['Page'].bindingContext.onCinemaTap }}" cinemaId="{{ id }}">
+                                <StackLayout class="cinema-card" tap="onCinemaTap" cinemaId="{{ id }}">
                                     <Image src="{{ imageUrl }}" loadMode="async" class="cinema-card-img" stretch="aspectFill" />
                                     <StackLayout class="cinema-info-container">
                                         <Label text="{{ name }}" class="cinema-name" />
@@ -168,16 +171,15 @@
             <GridLayout rows="auto, auto, *" visibility="{{ currentTab === 2 ? 'visible' : 'collapsed' }}">
                 <!-- City badge -->
                 <Button row="0" text="{{ 'Ciudad: ' + selectedCity }}" tap="{{ toggleCityModal }}" class="city-badge-btn m-10" horizontalAlignment="left" />
-                
-                <!-- Category list horizontal scroll -->
+
                 <ScrollView row="1" orientation="horizontal" class="p-b-5">
                     <StackLayout orientation="horizontal" class="bar-cat-grid">
-                        <Repeater items="{{ snackCategories }}">
+                        <Repeater items="{{ snackCategoriesWithState }}">
                             <Repeater.itemsLayout>
                                 <StackLayout orientation="horizontal" />
                             </Repeater.itemsLayout>
                             <Repeater.itemTemplate>
-                                <StackLayout class="{{ id === $parents['Page'].bindingContext.selectedCategoryId ? 'bar-cat-card bar-cat-card-active' : 'bar-cat-card' }}" width="110" tap="{{ $parents['Page'].bindingContext.selectSnackCategory }}" categoryId="{{ id }}">
+                                <StackLayout class="{{ isActive ? 'bar-cat-card bar-cat-card-active' : 'bar-cat-card' }}" width="110" tap="selectSnackCategory" categoryId="{{ id }}">
                                     <!-- Simple emoji representing category icon -->
                                     <Label text="{{ id === 'cat1' ? '🎁' : (id === 'cat2' ? '🍱' : (id === 'cat3' ? '🥤' : (id === 'cat4' ? '☕' : (id === 'cat5' ? '🌭' : (id === 'cat6' ? '🍬' : (id === 'cat7' ? '🧀' : (id === 'cat8' ? '🍿' : (id === 'cat9' ? '🍿' : '🆕')))))))) }}" class="bar-cat-icon" />
                                     <Label text="{{ name }}" class="bar-cat-name" textWrap="true" />
@@ -195,7 +197,7 @@
                                 <StackLayout />
                             </Repeater.itemsLayout>
                             <Repeater.itemTemplate>
-                                <GridLayout columns="auto, *" rows="auto" class="bar-product-card" tap="{{ $parents['Page'].bindingContext.onSnackTap }}" snackId="{{ id }}">
+                                <GridLayout columns="auto, *" rows="auto" class="bar-product-card" tap="onSnackTap" snackId="{{ id }}">
                                     <Image col="0" src="{{ imageUrl }}" loadMode="async" class="bar-product-img" stretch="aspectFill" />
                                     <StackLayout col="1" class="p-l-15">
                                         <Label text="{{ name }}" class="bar-product-name" />
@@ -214,13 +216,13 @@
                 <StackLayout class="p-20">
                     <Label text="Club SuperPuntos Supercines" class="text-yellow font-bold text-center m-b-15" style="font-size: 22;" />
                     <Image src="https://picsum.photos/id/1048/600/300" class="m-b-20" stretch="aspectFit" style="border-radius: 8;" />
-                    
+
                     <Label text="¡Conoce los beneficios de pertenecer al club más exclusivo del cine en Ecuador!" class="font-bold text-center text-white m-b-15" textWrap="true" style="font-size: 16;" />
-                    
+
                     <Label text="• Acumula 1 punto por cada dólar en compras en boletería y bar." class="text-white m-b-5" textWrap="true" style="font-size: 14;" />
                     <Label text="• Canjea tus puntos por entradas gratis y deliciosos combos del bar." class="text-white m-b-5" textWrap="true" style="font-size: 14;" />
                     <Label text="• Accede a descuentos y preventas exclusivas para estrenos mundiales." class="text-white m-b-20" textWrap="true" style="font-size: 14;" />
-                    
+
                     <Button text="Quiero Registrarme" class="btn-continue m-t-20" tap="{{ selectTabLogin }}" />
                 </StackLayout>
             </ScrollView>
@@ -238,7 +240,7 @@
                 <ScrollView visibility="{{ isLoggedIn ? 'visible' : 'collapsed' }}">
                     <StackLayout class="p-20">
                         <Label text="Tus Entradas y Compras" class="text-yellow font-bold text-center m-b-15" style="font-size: 20;" />
-                        
+
                         <!-- Mock Ticket Card -->
                         <StackLayout class="p-15 m-b-20" style="background-color: #1a1a1a; border-radius: 8; border-left-width: 5; border-left-color: #FED100;">
                             <GridLayout columns="*, auto">
@@ -289,7 +291,7 @@
                         </StackLayout>
 
                         <Button text="INGRESAR" tap="{{ onLoginSubmit }}" class="login-btn-submit" />
-                        
+
                         <Button text="Registrar una cuenta" tap="{{ onRegisterMock }}" class="login-link-btn" />
                         <Button text="¿Olvidó su contraseña?" tap="{{ onForgotMock }}" class="login-link-btn" />
                     </StackLayout>
@@ -299,13 +301,13 @@
                 <ScrollView visibility="{{ isLoggedIn ? 'visible' : 'collapsed' }}">
                     <StackLayout class="p-20">
                         <Label text="Mi Perfil" class="text-yellow font-bold text-center m-b-20" style="font-size: 22;" />
-                        
+
                         <StackLayout class="p-15 bg-dark m-b-25" style="border-radius: 8; border-width: 1; border-color: #333333;">
                             <Label text="Usuario Registrado" class="text-muted" style="font-size: 13;" />
                             <Label text="{{ loggedUserEmail }}" class="text-white font-bold m-t-5" style="font-size: 18;" />
-                            
+
                             <StackLayout class="m-t-15 m-b-15" style="height: 1; background-color: #333333;" />
-                            
+
                             <GridLayout columns="*, *">
                                 <StackLayout col="0">
                                     <Label text="Tarjeta Club" class="text-muted" style="font-size: 12;" />
@@ -377,7 +379,7 @@
                                     <StackLayout />
                                 </Repeater.itemsLayout>
                                 <Repeater.itemTemplate>
-                                    <StackLayout class="city-item-row" tap="{{ $parents['Page'].bindingContext.selectCity }}" city="{{ $value }}">
+                                    <StackLayout class="city-item-row" tap="selectCity" city="{{ $value }}">
                                         <Label text="{{ $value }}" class="city-item-text" />
                                         <StackLayout class="city-separator" />
                                     </StackLayout>
@@ -388,6 +390,6 @@
                 </StackLayout>
             </FlexboxLayout>
         </AbsoluteLayout>
-        
+
     </GridLayout>
 </Page>

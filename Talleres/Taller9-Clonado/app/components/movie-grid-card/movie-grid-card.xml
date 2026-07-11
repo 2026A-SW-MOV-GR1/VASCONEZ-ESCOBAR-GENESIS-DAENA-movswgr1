@@ -1,0 +1,12 @@
+<StackLayout xmlns="http://schemas.nativescript.org/tns.xsd"
+    class="movie-grid-card card-tap"
+    width="30%">
+    <StackLayout class="movie-grid-poster-container">
+        <Image src="{{ posterUrl }}" loadMode="async" class="movie-grid-poster-img" stretch="aspectFill" />
+        <Label text="{{ label }}"
+            class="{{ label === 'PREVENTA' ? 'movie-banner movie-banner-preventa' : (label === 'ESTRENO' ? 'movie-banner movie-banner-estreno' : 'movie-banner movie-banner-prox') }}"
+            visibility="{{ label ? 'visible' : 'collapsed' }}"
+            verticalAlignment="bottom" />
+    </StackLayout>
+    <Label text="{{ title }}" class="movie-grid-title" textWrap="true" maxLines="2" />
+</StackLayout>

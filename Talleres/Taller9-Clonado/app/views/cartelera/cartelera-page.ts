@@ -1,4 +1,4 @@
-import { EventData, Page, Observable, Frame, ApplicationSettings, Dialogs } from '@nativescript/core';
+import { EventData, Page, Observable, Frame, ApplicationSettings, Dialogs, Screen } from '@nativescript/core';
 import { MockDataService } from '../../services/mock-data.service';
 import { Movie } from '../../models/movie';
 import { Cinema } from '../../models/cinema';
@@ -19,10 +19,12 @@ export class CarteleraViewModel extends Observable {
   private _cities: string[] = [];
   private _cinemas: Cinema[] = [];
   private _filteredCinemas: Cinema[] = [];
-  
+
   private _snackCategories: SnackCategory[] = [];
   private _selectedCategoryId = 'cat1';
   private _filteredSnacks: SnackProduct[] = [];
+  private _snackCategoriesWithState: Array<{id: string; name: string; iconName?: string; isActive: boolean}> = [];
+  private _gridCardWidth: number = 110;
 
   // Login Form properties
   private _emailInput = '';
@@ -46,12 +48,17 @@ export class CarteleraViewModel extends Observable {
     this._cities = MockDataService.getCities().map(c => c.name);
     this._movies = MockDataService.getMovies();
     this._filteredMovies = this._movies;
-    
+
     this._cinemas = MockDataService.getCinemas();
     this.updateFilteredCinemas();
 
     this._snackCategories = MockDataService.getSnackCategories();
+    this.updateSnackCategoriesWithState();
     this.updateFilteredSnacks();
+
+    // Calculate grid card width: screen width / 3 columns minus margins
+    const screenWidth = Screen.mainScreen.widthDIPs;
+    this._gridCardWidth = Math.floor(screenWidth / 3) - 12;
 
     // Check login state
     this._isLoggedIn = ApplicationSettings.getBoolean('isLoggedIn', false);
@@ -68,7 +75,7 @@ export class CarteleraViewModel extends Observable {
       this._currentTab = val;
       this.notifyPropertyChange('currentTab', val);
       this.updateHeaderTitle();
-      
+
       // Deactivate search when switching tabs
       this.isSearchActive = false;
       this.searchQuery = '';
@@ -95,7 +102,7 @@ export class CarteleraViewModel extends Observable {
       this._selectedCity = val;
       this.notifyPropertyChange('selectedCity', val);
       ApplicationSettings.setString('selectedCity', val);
-      
+
       // Update city dependent content
       this.updateFilteredCinemas();
     }
@@ -162,6 +169,14 @@ export class CarteleraViewModel extends Observable {
     return this._snackCategories;
   }
 
+  get snackCategoriesWithState(): Array<{id: string; name: string; iconName?: string; isActive: boolean}> {
+    return this._snackCategoriesWithState;
+  }
+
+  get gridCardWidth(): number {
+    return this._gridCardWidth;
+  }
+
   get selectedCategoryId(): string {
     return this._selectedCategoryId;
   }
@@ -171,6 +186,7 @@ export class CarteleraViewModel extends Observable {
       this._selectedCategoryId = val;
       this.notifyPropertyChange('selectedCategoryId', val);
       this.updateFilteredSnacks();
+      this.updateSnackCategoriesWithState();
     }
   }
 
@@ -239,6 +255,14 @@ export class CarteleraViewModel extends Observable {
     this.notifyPropertyChange('filteredSnacks', this._filteredSnacks);
   }
 
+  private updateSnackCategoriesWithState() {
+    this._snackCategoriesWithState = this._snackCategories.map(cat => ({
+      ...cat,
+      isActive: cat.id === this._selectedCategoryId
+    }));
+    this.notifyPropertyChange('snackCategoriesWithState', this._snackCategoriesWithState);
+  }
+
   // Tab Selection
   selectTabPeliculas() { this.currentTab = 0; }
   selectTabCines() { this.currentTab = 1; }
@@ -272,8 +296,8 @@ export class CarteleraViewModel extends Observable {
       this._filteredMovies = this._movies;
     } else {
       const query = this._searchQuery.toLowerCase();
-      this._filteredMovies = this._movies.filter(m => 
-        m.title.toLowerCase().includes(query) || 
+      this._filteredMovies = this._movies.filter(m =>
+        m.title.toLowerCase().includes(query) ||
         m.englishTitle.toLowerCase().includes(query) ||
         m.genre.toLowerCase().includes(query)
       );
@@ -299,7 +323,7 @@ export class CarteleraViewModel extends Observable {
   // Taps
   onMovieTap(args: any) {
     const movieId = args.object.movieId;
-    
+
     // Navigate to Detail Page
     Frame.topmost().navigate({
       moduleName: 'views/movie-detail/movie-detail-page',
@@ -439,4 +463,44 @@ export class CarteleraViewModel extends Observable {
 export function onNavigatingTo(args: EventData) {
   const page = <Page>args.object;
   page.bindingContext = new CarteleraViewModel();
+}
+
+// ─── Module-level handlers for Repeater item taps ────────────────────────────
+// $parents['Page'].bindingContext falla en runtime dentro de Repeaters anidados
+// en modales AbsoluteLayout. Estos exports resuelven el contexto correctamente.
+
+function getVM(): CarteleraViewModel | null {
+  const frame = Frame.topmost();
+  if (!frame || !frame.currentPage) return null;
+  return frame.currentPage.bindingContext as CarteleraViewModel;
+}
+
+export function onMovieTap(args: any) {
+  const vm = getVM();
+  if (vm) vm.onMovieTap(args);
+}
+
+export function onCinemaTap(args: any) {
+  const vm = getVM();
+  if (vm) vm.onCinemaTap(args);
+}
+
+export function selectCity(args: any) {
+  const vm = getVM();
+  if (vm) vm.selectCity(args);
+}
+
+export function selectSnackCategory(args: any) {
+  const vm = getVM();
+  if (vm) vm.selectSnackCategory(args);
+}
+
+export function onSnackTap(args: any) {
+  const vm = getVM();
+  if (vm) vm.onSnackTap(args);
+}
+
+export function onScheduleTap(args: any) {
+  const vm = getVM();
+  if (vm) vm.onScheduleTap(args);
 }

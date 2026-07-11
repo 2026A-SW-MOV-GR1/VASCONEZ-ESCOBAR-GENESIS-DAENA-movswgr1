@@ -1,0 +1,39 @@
+<GridLayout xmlns="http://schemas.nativescript.org/tns.xsd"
+    columns="*, *, *, *, *, *, *"
+    class="tab-menu-bar">
+    <StackLayout col="0" tap="{{ selectTabPeliculas }}" class="{{ currentTab === 0 ? 'tab-item tab-item-active' : 'tab-item' }}">
+        <Label text="🎬" class="tab-icon" />
+        <Label text="Películas" class="tab-label" />
+        <StackLayout class="{{ currentTab === 0 ? 'tab-active-indicator' : 'tab-inactive-indicator' }}" />
+    </StackLayout>
+    <StackLayout col="1" tap="{{ selectTabCines }}" class="{{ currentTab === 1 ? 'tab-item tab-item-active' : 'tab-item' }}">
+        <Label text="🏛️" class="tab-icon" />
+        <Label text="Cines" class="tab-label" />
+        <StackLayout class="{{ currentTab === 1 ? 'tab-active-indicator' : 'tab-inactive-indicator' }}" />
+    </StackLayout>
+    <StackLayout col="2" tap="{{ selectTabBar }}" class="{{ currentTab === 2 ? 'tab-item tab-item-active' : 'tab-item' }}">
+        <Label text="🍿" class="tab-icon" />
+        <Label text="Bar" class="tab-label" />
+        <StackLayout class="{{ currentTab === 2 ? 'tab-active-indicator' : 'tab-inactive-indicator' }}" />
+    </StackLayout>
+    <StackLayout col="3" tap="{{ selectTabPuntos }}" class="{{ currentTab === 3 ? 'tab-item tab-item-active' : 'tab-item' }}">
+        <Label text="🔴" class="tab-icon" />
+        <Label text="Puntos" class="tab-label" />
+        <StackLayout class="{{ currentTab === 3 ? 'tab-active-indicator' : 'tab-inactive-indicator' }}" />
+    </StackLayout>
+    <StackLayout col="4" tap="{{ selectTabCompras }}" class="{{ currentTab === 4 ? 'tab-item tab-item-active' : 'tab-item' }}">
+        <Label text="🛒" class="tab-icon" />
+        <Label text="Compras" class="tab-label" />
+        <StackLayout class="{{ currentTab === 4 ? 'tab-active-indicator' : 'tab-inactive-indicator' }}" />
+    </StackLayout>
+    <StackLayout col="5" tap="{{ selectTabLogin }}" class="{{ currentTab === 5 ? 'tab-item tab-item-active' : 'tab-item' }}">
+        <Label text="👤" class="tab-icon" />
+        <Label text="{{ isLoggedIn ? 'Perfil' : 'Ingresar' }}" class="tab-label" />
+        <StackLayout class="{{ currentTab === 5 ? 'tab-active-indicator' : 'tab-inactive-indicator' }}" />
+    </StackLayout>
+    <StackLayout col="6" tap="{{ selectTabMas }}" class="{{ currentTab === 6 ? 'tab-item tab-item-active' : 'tab-item' }}">
+        <Label text="•••" class="tab-icon" />
+        <Label text="Más" class="tab-label" />
+        <StackLayout class="{{ currentTab === 6 ? 'tab-active-indicator' : 'tab-inactive-indicator' }}" />
+    </StackLayout>
+</GridLayout>

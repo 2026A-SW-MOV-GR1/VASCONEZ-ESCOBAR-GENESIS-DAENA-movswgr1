@@ -69,15 +69,12 @@ export class CitySelectViewModel extends Observable {
     }
   }
 
-selectCity(args: any) {
-    const tappedCity = args.object.bindingContext as string;
-
-    this.selectedCityText = tappedCity;
+  _doSelectCity(cityName: string) {
+    this.selectedCityText = cityName;
     this.isCitySelected = true;
     this.isModalVisible = false;
-
-    ApplicationSettings.setString("selectedCity", tappedCity);
-}
+    ApplicationSettings.setString('selectedCity', cityName);
+  }
 
   onContinue() {
     // Navigate to cartelera
@@ -97,10 +94,13 @@ export function onNavigatingTo(args: EventData) {
   page.bindingContext = new CitySelectViewModel();
 }
 
-// Module-level exports for Repeater item template bindings
-// (tap="{{ $parents['Page']... }}" does not work inside AbsoluteLayout modals)
+// Module-level export — resuelve el tap del Repeater de ciudades
 export function selectCity(args: any) {
   const page = <Page>Frame.topmost().currentPage;
   const vm = <CitySelectViewModel>page.bindingContext;
-  vm.selectCity(args);
+  // bindingContext del ítem es el string $value (ciudad)
+  const cityName = args.object.bindingContext as string;
+  if (cityName && typeof cityName === 'string') {
+    vm._doSelectCity(cityName);
+  }
 }

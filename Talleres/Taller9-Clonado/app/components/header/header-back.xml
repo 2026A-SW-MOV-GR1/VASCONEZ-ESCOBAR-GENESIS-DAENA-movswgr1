@@ -1,0 +1,12 @@
+<GridLayout xmlns="http://schemas.nativescript.org/tns.xsd"
+    columns="auto, *, auto"
+    class="app-header"
+    verticalAlignment="center">
+    <StackLayout col="0" orientation="horizontal" verticalAlignment="center" tap="{{ goBack }}">
+        <Label text="◀" class="header-back-arrow" />
+        <StackLayout class="header-logo-icon">
+            <Label text="S" class="header-logo-text" />
+        </StackLayout>
+        <Label text="{{ headerTitle }}" class="header-title" />
+    </StackLayout>
+</GridLayout>

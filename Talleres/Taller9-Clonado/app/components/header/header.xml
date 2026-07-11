@@ -1,0 +1,15 @@
+<GridLayout xmlns="http://schemas.nativescript.org/tns.xsd"
+    columns="auto, *, auto, auto"
+    class="app-header"
+    verticalAlignment="center">
+    <StackLayout col="0" orientation="horizontal" verticalAlignment="center" tap="{{ onHeaderLogoTap }}">
+        <StackLayout class="header-logo-icon">
+            <Label text="S" class="header-logo-text" />
+        </StackLayout>
+        <Label text="{{ headerTitle }}" class="header-title" />
+    </StackLayout>
+    <Button col="2" text="🔍" tap="{{ toggleSearch }}" class="header-action-btn btn-ripple"
+        visibility="{{ showSearch ? 'visible' : 'collapsed' }}" />
+    <Button col="3" text="{{ isGridView ? '▤' : '⊞' }}" tap="{{ toggleViewMode }}" class="header-action-btn btn-ripple"
+        visibility="{{ showGridToggle ? 'visible' : 'collapsed' }}" />
+</GridLayout>

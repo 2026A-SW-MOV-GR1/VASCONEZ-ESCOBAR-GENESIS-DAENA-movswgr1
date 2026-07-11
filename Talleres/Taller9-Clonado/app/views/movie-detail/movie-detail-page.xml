@@ -112,7 +112,7 @@
                             <StackLayout />
                         </Repeater.itemsLayout>
                         <Repeater.itemTemplate>
-                            <GridLayout columns="*, auto" class="schedule-row" tap="{{ $parents['Page'].bindingContext.onScheduleTap }}" scheduleTime="{{ time }}" scheduleRoom="{{ room }}">
+                            <GridLayout columns="*, auto" class="schedule-row" tap="onScheduleTap" scheduleTime="{{ time }}" scheduleRoom="{{ room }}">
                                 <Label col="0" text="{{ time + ' - ' + room }}" class="schedule-time-text" />
                                 <Label col="1" text="🛒" class="schedule-cart-icon" />
                             </GridLayout>
@@ -136,7 +136,7 @@
                                     <StackLayout />
                                 </Repeater.itemsLayout>
                                 <Repeater.itemTemplate>
-                                    <StackLayout class="city-item-row" tap="{{ $parents['Page'].bindingContext.selectCity }}" city="{{ $value }}">
+                                    <StackLayout class="city-item-row" tap="selectCity" city="{{ $value }}">
                                         <Label text="{{ $value }}" class="city-item-text" />
                                         <StackLayout class="city-separator" />
                                     </StackLayout>

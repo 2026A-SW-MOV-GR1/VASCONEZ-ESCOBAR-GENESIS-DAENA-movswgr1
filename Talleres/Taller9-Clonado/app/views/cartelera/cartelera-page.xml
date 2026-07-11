@@ -130,7 +130,7 @@
                                     <WrapLayout orientation="horizontal" />
                                 </Repeater.itemsLayout>
                                 <Repeater.itemTemplate>
-                                    <StackLayout class="movie-grid-card" width="{{ gridCardWidth }}" tap="onMovieTap" movieId="{{ id }}">
+                                    <StackLayout class="movie-grid-card" tap="onMovieTap" movieId="{{ id }}">
                                         <StackLayout class="movie-grid-poster-container">
                                             <Image src="{{ posterUrl }}" loadMode="async" class="movie-grid-poster-img" stretch="aspectFill" />
                                             <Label text="{{ label }}" class="{{ label === 'PREVENTA' ? 'movie-banner movie-banner-preventa' : (label === 'ESTRENO' ? 'movie-banner movie-banner-estreno' : 'movie-banner movie-banner-prox') }}" visibility="{{ label ? 'visible' : 'collapsed' }}" verticalAlignment="bottom" />
@@ -379,7 +379,7 @@
                                     <StackLayout />
                                 </Repeater.itemsLayout>
                                 <Repeater.itemTemplate>
-                                    <StackLayout class="city-item-row" tap="selectCity" city="{{ $value }}">
+                                    <StackLayout class="city-item-row" tap="selectCity">
                                         <Label text="{{ $value }}" class="city-item-text" />
                                         <StackLayout class="city-separator" />
                                     </StackLayout>

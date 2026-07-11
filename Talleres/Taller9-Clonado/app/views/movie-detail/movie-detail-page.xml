@@ -136,7 +136,7 @@
                                     <StackLayout />
                                 </Repeater.itemsLayout>
                                 <Repeater.itemTemplate>
-                                    <StackLayout class="city-item-row" tap="selectCity" city="{{ $value }}">
+                                    <StackLayout class="city-item-row" tap="selectCity">
                                         <Label text="{{ $value }}" class="city-item-text" />
                                         <StackLayout class="city-separator" />
                                     </StackLayout>

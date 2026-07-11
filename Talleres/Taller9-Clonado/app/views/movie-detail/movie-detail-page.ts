@@ -154,8 +154,8 @@ export class MovieDetailViewModel extends Observable {
   }
 
   selectCity(args: any) {
-    const tappedCity: string = args.object.city;
-    if (tappedCity) {
+    const tappedCity: string = args.object.bindingContext as string;
+    if (tappedCity && typeof tappedCity === 'string') {
       this.selectedCity = tappedCity;
     }
     this.isCityModalVisible = false;

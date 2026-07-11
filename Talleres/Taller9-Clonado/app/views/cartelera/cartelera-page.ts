@@ -1,4 +1,4 @@
-import { EventData, Page, Observable, Frame, ApplicationSettings, Dialogs, Screen } from '@nativescript/core';
+import { EventData, Page, Observable, Frame, ApplicationSettings, Dialogs } from '@nativescript/core';
 import { MockDataService } from '../../services/mock-data.service';
 import { Movie } from '../../models/movie';
 import { Cinema } from '../../models/cinema';
@@ -24,7 +24,6 @@ export class CarteleraViewModel extends Observable {
   private _selectedCategoryId = 'cat1';
   private _filteredSnacks: SnackProduct[] = [];
   private _snackCategoriesWithState: Array<{id: string; name: string; iconName?: string; isActive: boolean}> = [];
-  private _gridCardWidth: number = 110;
 
   // Login Form properties
   private _emailInput = '';
@@ -56,9 +55,7 @@ export class CarteleraViewModel extends Observable {
     this.updateSnackCategoriesWithState();
     this.updateFilteredSnacks();
 
-    // Calculate grid card width: screen width / 3 columns minus margins
-    const screenWidth = Screen.mainScreen.widthDIPs;
-    this._gridCardWidth = Math.floor(screenWidth / 3) - 12;
+
 
     // Check login state
     this._isLoggedIn = ApplicationSettings.getBoolean('isLoggedIn', false);
@@ -173,9 +170,6 @@ export class CarteleraViewModel extends Observable {
     return this._snackCategoriesWithState;
   }
 
-  get gridCardWidth(): number {
-    return this._gridCardWidth;
-  }
 
   get selectedCategoryId(): string {
     return this._selectedCategoryId;
@@ -315,8 +309,9 @@ export class CarteleraViewModel extends Observable {
   }
 
   selectCity(args: any) {
-    const tappedCity = args.object.city;
-    this.selectedCity = tappedCity;
+    // bindingContext del ítem es el string $value directamente
+    const tappedCity = args.object.bindingContext as string;
+    if (tappedCity) this.selectedCity = tappedCity;
     this.isCityModalVisible = false;
   }
 
@@ -500,7 +495,4 @@ export function onSnackTap(args: any) {
   if (vm) vm.onSnackTap(args);
 }
 
-export function onScheduleTap(args: any) {
-  const vm = getVM();
-  if (vm) vm.onScheduleTap(args);
-}
+// onScheduleTap pertenece exclusivamente a movie-detail-page.ts

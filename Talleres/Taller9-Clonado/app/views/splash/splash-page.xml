@@ -1,0 +1,12 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="onLoaded" actionBarHidden="true" class="bg-blue">
+    <FlexboxLayout class="splash-container">
+        <StackLayout id="logoContainer" class="logo-ticket">
+            <StackLayout class="logo-ticket-top">
+                <Label text="SUPERCINES" class="logo-text-title" />
+            </StackLayout>
+            <StackLayout class="logo-ticket-bottom">
+                <Label text="mucho más que un cine" class="logo-text-subtitle" />
+            </StackLayout>
+        </StackLayout>
+    </FlexboxLayout>
+</Page>

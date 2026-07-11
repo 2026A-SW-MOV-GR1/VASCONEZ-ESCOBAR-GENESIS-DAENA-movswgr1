@@ -1,0 +1,107 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo" actionBarHidden="true">
+    <GridLayout rows="auto, auto, *" columns="*">
+
+        <!-- HEADER -->
+        <GridLayout row="0" columns="auto, *, auto" class="app-header" verticalAlignment="center">
+            <StackLayout col="0" orientation="horizontal" verticalAlignment="center" tap="{{ goBack }}">
+                <Label text="◀" class="header-action-btn" style="font-size: 16; margin-right: 5; text-align: center; vertical-align: middle;" />
+                <StackLayout class="header-logo-icon">
+                    <Label text="S" class="header-logo-text" />
+                </StackLayout>
+                <Label text="Sinopsis" class="header-title" />
+            </StackLayout>
+        </GridLayout>
+
+        <!-- TOP BAR MENU (estático — tab 0 activo) -->
+        <GridLayout row="1" columns="*, *, *, *, *, *, *" class="tab-menu-bar">
+            <StackLayout col="0" tap="{{ navigateToCarteleraTab0 }}" class="tab-item tab-item-active">
+                <Label text="🎬" class="tab-icon" />
+                <Label text="Películas" class="tab-label" />
+                <StackLayout class="tab-active-indicator" />
+            </StackLayout>
+            <StackLayout col="1" tap="{{ navigateToCarteleraTab1 }}" class="tab-item">
+                <Label text="🏛️" class="tab-icon" />
+                <Label text="Cines" class="tab-label" />
+                <StackLayout class="tab-inactive-indicator" />
+            </StackLayout>
+            <StackLayout col="2" tap="{{ navigateToCarteleraTab2 }}" class="tab-item">
+                <Label text="🍿" class="tab-icon" />
+                <Label text="Bar" class="tab-label" />
+                <StackLayout class="tab-inactive-indicator" />
+            </StackLayout>
+            <StackLayout col="3" tap="{{ navigateToCarteleraTab3 }}" class="tab-item">
+                <Label text="🔴" class="tab-icon" />
+                <Label text="Puntos" class="tab-label" />
+                <StackLayout class="tab-inactive-indicator" />
+            </StackLayout>
+            <StackLayout col="4" tap="{{ navigateToCarteleraTab4 }}" class="tab-item">
+                <Label text="🛒" class="tab-icon" />
+                <Label text="Compras" class="tab-label" />
+                <StackLayout class="tab-inactive-indicator" />
+            </StackLayout>
+            <StackLayout col="5" tap="{{ navigateToCarteleraTab5 }}" class="tab-item">
+                <Label text="👤" class="tab-icon" />
+                <Label text="Ingresar" class="tab-label" />
+                <StackLayout class="tab-inactive-indicator" />
+            </StackLayout>
+            <StackLayout col="6" tap="{{ navigateToCarteleraTab6 }}" class="tab-item">
+                <Label text="•••" class="tab-icon" />
+                <Label text="Más" class="tab-label" />
+                <StackLayout class="tab-inactive-indicator" />
+            </StackLayout>
+        </GridLayout>
+
+        <!-- MAIN CONTENT -->
+        <ScrollView row="2" class="bg-dark">
+            <StackLayout class="synopsis-container">
+
+                <!-- Poster + info horizontal section -->
+                <GridLayout columns="auto, *" class="detail-header-card m-b-10">
+                    <!-- Poster -->
+                    <StackLayout col="0" class="detail-poster-container">
+                        <Image src="{{ movie.posterUrl }}" loadMode="async" stretch="aspectFill" class="movie-poster-img" />
+                        <Label
+                            text="{{ movie.label }}"
+                            class="{{ movie.label === 'PREVENTA' ? 'movie-banner movie-banner-preventa' : (movie.label === 'ESTRENO' ? 'movie-banner movie-banner-estreno' : 'movie-banner movie-banner-prox') }}"
+                            visibility="{{ movie.label ? 'visible' : 'collapsed' }}"
+                            verticalAlignment="bottom" />
+                    </StackLayout>
+
+                    <!-- Metadata -->
+                    <StackLayout col="1" class="p-l-10">
+                        <Label text="{{ movie.title }}" class="detail-title-yellow" textWrap="true" />
+                        <Label text="{{ movie.englishTitle }}" class="text-muted m-b-8" style="font-size: 13;" textWrap="true" />
+
+                        <GridLayout columns="auto, *" rows="auto, auto, auto, auto" class="m-b-10">
+                            <Label row="0" col="0" text="Género: " class="movie-detail-label" />
+                            <Label row="0" col="1" text="{{ movie.genre }}" class="movie-detail-val" />
+
+                            <Label row="1" col="0" text="Idioma: " class="movie-detail-label" />
+                            <Label row="1" col="1" text="{{ movie.language }}" class="movie-detail-val" />
+
+                            <Label row="2" col="0" text="Duración: " class="movie-detail-label" />
+                            <Label row="2" col="1" text="{{ movie.duration }}" class="movie-detail-val" />
+
+                            <Label row="3" col="0" text="Censura: " class="movie-detail-label" />
+                            <Label row="3" col="1" text="{{ movie.rating }}" class="movie-detail-val" />
+                        </GridLayout>
+
+                        <!-- Trailer button -->
+                        <Button
+                            text="▶  Ver Trailer"
+                            tap="{{ onTrailerTap }}"
+                            class="synopsis-btn-trailer" />
+                    </StackLayout>
+                </GridLayout>
+
+                <!-- Synopsis text section -->
+                <StackLayout class="p-10 m-b-20">
+                    <Label text="Sinopsis" class="text-yellow" style="font-size: 18; font-weight: bold; margin-bottom: 10;" />
+                    <Label text="{{ movie.synopsis }}" class="synopsis-text" textWrap="true" />
+                </StackLayout>
+
+            </StackLayout>
+        </ScrollView>
+
+    </GridLayout>
+</Page>

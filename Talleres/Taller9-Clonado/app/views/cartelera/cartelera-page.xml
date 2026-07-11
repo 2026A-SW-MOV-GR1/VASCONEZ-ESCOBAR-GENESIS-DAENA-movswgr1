@@ -1,0 +1,393 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo" actionBarHidden="true">
+    <GridLayout rows="auto, auto, *, auto" columns="*">
+        
+        <!-- HEADER (Row 0) -->
+        <GridLayout row="0" columns="auto, *, auto, auto" class="app-header" verticalAlignment="center">
+            <!-- Left Side Logo + Title -->
+            <StackLayout col="0" orientation="horizontal" verticalAlignment="center" tap="{{ onHeaderLogoTap }}">
+                <StackLayout class="header-logo-icon">
+                    <Label text="S" class="header-logo-text" />
+                </StackLayout>
+                <Label text="{{ headerTitle }}" class="header-title" />
+            </StackLayout>
+
+            <!-- Search Icon (Only visible on Peliculas tab) -->
+            <Button col="2" text="🔍" tap="{{ toggleSearch }}" class="header-action-btn" visibility="{{ currentTab === 0 ? 'visible' : 'collapsed' }}" />
+            
+            <!-- List/Grid Toggle (Only visible on Peliculas tab) -->
+            <Button col="3" text="{{ isGridView ? '▤' : '⊞' }}" tap="{{ toggleViewMode }}" class="header-action-btn" visibility="{{ currentTab === 0 ? 'visible' : 'collapsed' }}" />
+        </GridLayout>
+
+        <!-- TOP BAR MENU (Row 1) -->
+        <GridLayout row="1" columns="*, *, *, *, *, *, *" class="tab-menu-bar">
+            <!-- Tab 0: Películas -->
+            <StackLayout col="0" tap="{{ selectTabPeliculas }}" class="{{ currentTab === 0 ? 'tab-item tab-item-active' : 'tab-item' }}">
+                <Label text="🎬" class="tab-icon" />
+                <Label text="Películas" class="tab-label" />
+                <StackLayout class="{{ currentTab === 0 ? 'tab-active-indicator' : 'tab-inactive-indicator' }}" />
+            </StackLayout>
+            
+            <!-- Tab 1: Cines -->
+            <StackLayout col="1" tap="{{ selectTabCines }}" class="{{ currentTab === 1 ? 'tab-item tab-item-active' : 'tab-item' }}">
+                <Label text="🏛️" class="tab-icon" />
+                <Label text="Cines" class="tab-label" />
+                <StackLayout class="{{ currentTab === 1 ? 'tab-active-indicator' : 'tab-inactive-indicator' }}" />
+            </StackLayout>
+
+            <!-- Tab 2: Bar -->
+            <StackLayout col="2" tap="{{ selectTabBar }}" class="{{ currentTab === 2 ? 'tab-item tab-item-active' : 'tab-item' }}">
+                <Label text="🍿" class="tab-icon" />
+                <Label text="Bar" class="tab-label" />
+                <StackLayout class="{{ currentTab === 2 ? 'tab-active-indicator' : 'tab-inactive-indicator' }}" />
+            </StackLayout>
+
+            <!-- Tab 3: SuperPuntos -->
+            <StackLayout col="3" tap="{{ selectTabPuntos }}" class="{{ currentTab === 3 ? 'tab-item tab-item-active' : 'tab-item' }}">
+                <Label text="🔴" class="tab-icon" />
+                <Label text="Puntos" class="tab-label" />
+                <StackLayout class="{{ currentTab === 3 ? 'tab-active-indicator' : 'tab-inactive-indicator' }}" />
+            </StackLayout>
+
+            <!-- Tab 4: Compras -->
+            <StackLayout col="4" tap="{{ selectTabCompras }}" class="{{ currentTab === 4 ? 'tab-item tab-item-active' : 'tab-item' }}">
+                <Label text="🛒" class="tab-icon" />
+                <Label text="Compras" class="tab-label" />
+                <StackLayout class="{{ currentTab === 4 ? 'tab-active-indicator' : 'tab-inactive-indicator' }}" />
+            </StackLayout>
+
+            <!-- Tab 5: Ingresar -->
+            <StackLayout col="5" tap="{{ selectTabLogin }}" class="{{ currentTab === 5 ? 'tab-item tab-item-active' : 'tab-item' }}">
+                <Label text="👤" class="tab-icon" />
+                <Label text="{{ isLoggedIn ? 'Perfil' : 'Ingresar' }}" class="tab-label" />
+                <StackLayout class="{{ currentTab === 5 ? 'tab-active-indicator' : 'tab-inactive-indicator' }}" />
+            </StackLayout>
+
+            <!-- Tab 6: Más -->
+            <StackLayout col="6" tap="{{ selectTabMas }}" class="{{ currentTab === 6 ? 'tab-item tab-item-active' : 'tab-item' }}">
+                <Label text="•••" class="tab-icon" />
+                <Label text="Más" class="tab-label" />
+                <StackLayout class="{{ currentTab === 6 ? 'tab-active-indicator' : 'tab-inactive-indicator' }}" />
+            </StackLayout>
+        </GridLayout>
+
+        <!-- MAIN DYNAMIC CONTENT (Row 2) -->
+        <GridLayout row="2" class="content-area">
+            
+            <!-- TAB 0: PELÍCULAS (Cartelera) -->
+            <GridLayout rows="auto, auto, *" visibility="{{ currentTab === 0 ? 'visible' : 'collapsed' }}">
+                <!-- City Filter Bar & Search bar -->
+                <GridLayout row="0" columns="*, auto" class="p-10 bg-dark" verticalAlignment="center">
+                    <Button col="0" text="{{ 'Ciudad: ' + selectedCity }}" tap="{{ toggleCityModal }}" class="city-badge-btn" horizontalAlignment="left" />
+                    <Label col="1" text="{{ selectedCity }}" class="text-muted text-right font-semibold p-5" verticalAlignment="center" />
+                </GridLayout>
+
+                <!-- Search Input field -->
+                <TextField row="1" text="{{ searchQuery }}" hint="Buscar película..." class="login-input-field m-10" returnKeyType="done" textChange="{{ onSearchChange }}" visibility="{{ isSearchActive ? 'visible' : 'collapsed' }}" />
+
+                <!-- Movies container -->
+                <GridLayout row="2">
+                    <!-- 1. LIST VIEW (Default) -->
+                    <ScrollView visibility="{{ !isGridView ? 'visible' : 'collapsed' }}">
+                        <StackLayout>
+                            <Repeater items="{{ filteredMovies }}">
+                                <Repeater.itemsLayout>
+                                    <StackLayout />
+                                </Repeater.itemsLayout>
+                                <Repeater.itemTemplate>
+                                    <GridLayout columns="auto, *" rows="auto" class="movie-list-card" tap="{{ $parents['Page'].bindingContext.onMovieTap }}" movieId="{{ id }}">
+                                        <!-- Poster column -->
+                                        <StackLayout col="0" class="movie-poster-container">
+                                            <Image src="{{ posterUrl }}" loadMode="async" class="movie-poster-img" stretch="aspectFill" />
+                                            <!-- Label Ribbon -->
+                                            <Label text="{{ label }}" class="{{ label === 'PREVENTA' ? 'movie-banner movie-banner-preventa' : (label === 'ESTRENO' ? 'movie-banner movie-banner-estreno' : 'movie-banner movie-banner-prox') }}" visibility="{{ label ? 'visible' : 'collapsed' }}" verticalAlignment="bottom" />
+                                        </StackLayout>
+                                        
+                                        <!-- Info column -->
+                                        <StackLayout col="1" class="p-l-10">
+                                            <Label text="{{ title }}" class="movie-title-yellow" textWrap="true" />
+                                            <Label text="{{ englishTitle }}" class="movie-title-english" textWrap="true" />
+                                            
+                                            <!-- Details table -->
+                                            <GridLayout columns="auto, *" rows="auto, auto" class="m-t-5">
+                                                <Label row="0" col="0" text="Idioma: " class="movie-detail-label" />
+                                                <Label row="0" col="1" text="{{ language }}" class="movie-detail-val" />
+                                                
+                                                <Label row="1" col="0" text="Censura: " class="movie-detail-label" />
+                                                <Label row="1" col="1" text="{{ rating }}" class="movie-detail-val" />
+                                            </GridLayout>
+                                        </StackLayout>
+                                    </GridLayout>
+                                </Repeater.itemTemplate>
+                            </Repeater>
+                        </StackLayout>
+                    </ScrollView>
+
+                    <!-- 2. GRID VIEW (3 Columns) -->
+                    <ScrollView visibility="{{ isGridView ? 'visible' : 'collapsed' }}">
+                        <WrapLayout>
+                            <Repeater items="{{ filteredMovies }}">
+                                <Repeater.itemTemplate>
+                                    <StackLayout class="movie-grid-card" width="30%" tap="{{ $parents['Page'].bindingContext.onMovieTap }}" movieId="{{ id }}">
+                                        <StackLayout class="movie-grid-poster-container">
+                                            <Image src="{{ posterUrl }}" loadMode="async" class="movie-grid-poster-img" stretch="aspectFill" />
+                                            <Label text="{{ label }}" class="{{ label === 'PREVENTA' ? 'movie-banner movie-banner-preventa' : (label === 'ESTRENO' ? 'movie-banner movie-banner-estreno' : 'movie-banner movie-banner-prox') }}" visibility="{{ label ? 'visible' : 'collapsed' }}" verticalAlignment="bottom" />
+                                        </StackLayout>
+                                        <Label text="{{ title }}" class="movie-grid-title" textWrap="true" maxLines="2" />
+                                    </StackLayout>
+                                </Repeater.itemTemplate>
+                            </Repeater>
+                        </WrapLayout>
+                    </ScrollView>
+                </GridLayout>
+            </GridLayout>
+
+            <!-- TAB 1: CINES -->
+            <GridLayout rows="auto, *" visibility="{{ currentTab === 1 ? 'visible' : 'collapsed' }}">
+                <Button row="0" text="{{ 'Ciudad: ' + selectedCity }}" tap="{{ toggleCityModal }}" class="city-badge-btn m-10" horizontalAlignment="left" />
+                <ScrollView row="1">
+                    <StackLayout>
+                        <Repeater items="{{ filteredCinemas }}">
+                            <Repeater.itemsLayout>
+                                <StackLayout />
+                            </Repeater.itemsLayout>
+                            <Repeater.itemTemplate>
+                                <StackLayout class="cinema-card" tap="{{ $parents['Page'].bindingContext.onCinemaTap }}" cinemaId="{{ id }}">
+                                    <Image src="{{ imageUrl }}" loadMode="async" class="cinema-card-img" stretch="aspectFill" />
+                                    <StackLayout class="cinema-info-container">
+                                        <Label text="{{ name }}" class="cinema-name" />
+                                        <Label text="{{ address }}" class="cinema-address" textWrap="true" />
+                                    </StackLayout>
+                                </StackLayout>
+                            </Repeater.itemTemplate>
+                        </Repeater>
+                    </StackLayout>
+                </ScrollView>
+            </GridLayout>
+
+            <!-- TAB 2: BAR -->
+            <GridLayout rows="auto, auto, *" visibility="{{ currentTab === 2 ? 'visible' : 'collapsed' }}">
+                <!-- City badge -->
+                <Button row="0" text="{{ 'Ciudad: ' + selectedCity }}" tap="{{ toggleCityModal }}" class="city-badge-btn m-10" horizontalAlignment="left" />
+                
+                <!-- Category list horizontal scroll -->
+                <ScrollView row="1" orientation="horizontal" class="p-b-5">
+                    <StackLayout orientation="horizontal" class="bar-cat-grid">
+                        <Repeater items="{{ snackCategories }}">
+                            <Repeater.itemsLayout>
+                                <StackLayout orientation="horizontal" />
+                            </Repeater.itemsLayout>
+                            <Repeater.itemTemplate>
+                                <StackLayout class="{{ id === $parents['Page'].bindingContext.selectedCategoryId ? 'bar-cat-card bar-cat-card-active' : 'bar-cat-card' }}" width="110" tap="{{ $parents['Page'].bindingContext.selectSnackCategory }}" categoryId="{{ id }}">
+                                    <!-- Simple emoji representing category icon -->
+                                    <Label text="{{ id === 'cat1' ? '🎁' : (id === 'cat2' ? '🍱' : (id === 'cat3' ? '🥤' : (id === 'cat4' ? '☕' : (id === 'cat5' ? '🌭' : (id === 'cat6' ? '🍬' : (id === 'cat7' ? '🧀' : (id === 'cat8' ? '🍿' : (id === 'cat9' ? '🍿' : '🆕')))))))) }}" class="bar-cat-icon" />
+                                    <Label text="{{ name }}" class="bar-cat-name" textWrap="true" />
+                                </StackLayout>
+                            </Repeater.itemTemplate>
+                        </Repeater>
+                    </StackLayout>
+                </ScrollView>
+
+                <!-- Products list -->
+                <ScrollView row="2">
+                    <StackLayout>
+                        <Repeater items="{{ filteredSnacks }}">
+                            <Repeater.itemsLayout>
+                                <StackLayout />
+                            </Repeater.itemsLayout>
+                            <Repeater.itemTemplate>
+                                <GridLayout columns="auto, *" rows="auto" class="bar-product-card" tap="{{ $parents['Page'].bindingContext.onSnackTap }}" snackId="{{ id }}">
+                                    <Image col="0" src="{{ imageUrl }}" loadMode="async" class="bar-product-img" stretch="aspectFill" />
+                                    <StackLayout col="1" class="p-l-15">
+                                        <Label text="{{ name }}" class="bar-product-name" />
+                                        <Label text="{{ description }}" class="bar-product-desc" textWrap="true" />
+                                        <Label text="{{ '$' + price.toFixed(2) }}" class="bar-product-price" />
+                                    </StackLayout>
+                                </GridLayout>
+                            </Repeater.itemTemplate>
+                        </Repeater>
+                    </StackLayout>
+                </ScrollView>
+            </GridLayout>
+
+            <!-- TAB 3: SUPERPUNTOS -->
+            <ScrollView visibility="{{ currentTab === 3 ? 'visible' : 'collapsed' }}">
+                <StackLayout class="p-20">
+                    <Label text="Club SuperPuntos Supercines" class="text-yellow font-bold text-center m-b-15" style="font-size: 22;" />
+                    <Image src="https://picsum.photos/id/1048/600/300" class="m-b-20" stretch="aspectFit" style="border-radius: 8;" />
+                    
+                    <Label text="¡Conoce los beneficios de pertenecer al club más exclusivo del cine en Ecuador!" class="font-bold text-center text-white m-b-15" textWrap="true" style="font-size: 16;" />
+                    
+                    <Label text="• Acumula 1 punto por cada dólar en compras en boletería y bar." class="text-white m-b-5" textWrap="true" style="font-size: 14;" />
+                    <Label text="• Canjea tus puntos por entradas gratis y deliciosos combos del bar." class="text-white m-b-5" textWrap="true" style="font-size: 14;" />
+                    <Label text="• Accede a descuentos y preventas exclusivas para estrenos mundiales." class="text-white m-b-20" textWrap="true" style="font-size: 14;" />
+                    
+                    <Button text="Quiero Registrarme" class="btn-continue m-t-20" tap="{{ selectTabLogin }}" />
+                </StackLayout>
+            </ScrollView>
+
+            <!-- TAB 4: MIS COMPRAS -->
+            <GridLayout class="compras-container" visibility="{{ currentTab === 4 ? 'visible' : 'collapsed' }}">
+                <!-- Case: Not logged in -->
+                <StackLayout visibility="{{ !isLoggedIn ? 'visible' : 'collapsed' }}" horizontalAlignment="center" verticalAlignment="center">
+                    <Label text="🎫" class="compras-icon text-center" />
+                    <Label text="Aún no ha iniciado sesión en su cuenta." class="compras-msg" textWrap="true" />
+                    <Button text="Ingresar" tap="{{ selectTabLogin }}" class="compras-btn-login" />
+                </StackLayout>
+
+                <!-- Case: Logged in (Show mock ticket) -->
+                <ScrollView visibility="{{ isLoggedIn ? 'visible' : 'collapsed' }}">
+                    <StackLayout class="p-20">
+                        <Label text="Tus Entradas y Compras" class="text-yellow font-bold text-center m-b-15" style="font-size: 20;" />
+                        
+                        <!-- Mock Ticket Card -->
+                        <StackLayout class="p-15 m-b-20" style="background-color: #1a1a1a; border-radius: 8; border-left-width: 5; border-left-color: #FED100;">
+                            <GridLayout columns="*, auto">
+                                <Label col="0" text="Spider-Man: Un Nuevo Día Dob 2D" class="font-bold text-white" style="font-size: 16;" textWrap="true" />
+                                <Label col="1" text="ACTIVO" class="text-yellow font-bold" style="font-size: 12;" />
+                            </GridLayout>
+                            <Label text="Complejo: Supercines Quito Centro" class="text-muted m-t-5" style="font-size: 13;" />
+                            <Label text="Sala: Sala 5 VIP" class="text-muted" style="font-size: 13;" />
+                            <Label text="Horario: 17H30" class="text-muted" style="font-size: 13;" />
+                            <Label text="Asientos: G12, G13" class="text-white font-bold m-t-10" style="font-size: 14;" />
+                            <Label text="Código de entrada: QR-839218" class="text-yellow m-t-10" style="font-size: 13;" />
+                        </StackLayout>
+
+                        <StackLayout class="p-15" style="background-color: #1a1a1a; border-radius: 8; border-left-width: 5; border-left-color: #0173B9;">
+                            <GridLayout columns="*, auto">
+                                <Label col="0" text="Combo Pareja - Bar" class="font-bold text-white" style="font-size: 16;" textWrap="true" />
+                                <Label col="1" text="RECLAMADO" class="text-muted font-bold" style="font-size: 12;" />
+                            </GridLayout>
+                            <Label text="1 Canguil Grande + 2 Bebidas Medianas" class="text-muted m-t-5" style="font-size: 13;" textWrap="true" />
+                            <Label text="Reclamado en: Supercines Quito Centro" class="text-muted" style="font-size: 13;" />
+                        </StackLayout>
+                    </StackLayout>
+                </ScrollView>
+            </GridLayout>
+
+            <!-- TAB 5: LOGIN / PROFILE -->
+            <GridLayout class="login-container" visibility="{{ currentTab === 5 ? 'visible' : 'collapsed' }}">
+                <!-- 1. Sign In Form -->
+                <ScrollView visibility="{{ !isLoggedIn ? 'visible' : 'collapsed' }}">
+                    <StackLayout>
+                        <StackLayout class="logo-ticket login-logo-spacing">
+                            <StackLayout class="logo-ticket-top">
+                                <Label text="SUPERCINES" class="logo-text-title" />
+                            </StackLayout>
+                            <StackLayout class="logo-ticket-bottom">
+                                <Label text="mucho más que un cine" class="logo-text-subtitle" />
+                            </StackLayout>
+                        </StackLayout>
+
+                        <StackLayout class="login-form-group">
+                            <Label text="Correo Electrónico" class="login-input-label" />
+                            <TextField text="{{ emailInput }}" hint="correo@ejemplo.com" keyboardType="email" class="login-input-field" />
+                        </StackLayout>
+
+                        <StackLayout class="login-form-group">
+                            <Label text="Contraseña" class="login-input-label" />
+                            <TextField text="{{ passwordInput }}" secure="true" hint="Contraseña" class="login-input-field" />
+                        </StackLayout>
+
+                        <Button text="INGRESAR" tap="{{ onLoginSubmit }}" class="login-btn-submit" />
+                        
+                        <Button text="Registrar una cuenta" tap="{{ onRegisterMock }}" class="login-link-btn" />
+                        <Button text="¿Olvidó su contraseña?" tap="{{ onForgotMock }}" class="login-link-btn" />
+                    </StackLayout>
+                </ScrollView>
+
+                <!-- 2. User Profile View (If Logged In) -->
+                <ScrollView visibility="{{ isLoggedIn ? 'visible' : 'collapsed' }}">
+                    <StackLayout class="p-20">
+                        <Label text="Mi Perfil" class="text-yellow font-bold text-center m-b-20" style="font-size: 22;" />
+                        
+                        <StackLayout class="p-15 bg-dark m-b-25" style="border-radius: 8; border-width: 1; border-color: #333333;">
+                            <Label text="Usuario Registrado" class="text-muted" style="font-size: 13;" />
+                            <Label text="{{ loggedUserEmail }}" class="text-white font-bold m-t-5" style="font-size: 18;" />
+                            
+                            <StackLayout class="m-t-15 m-b-15" style="height: 1; background-color: #333333;" />
+                            
+                            <GridLayout columns="*, *">
+                                <StackLayout col="0">
+                                    <Label text="Tarjeta Club" class="text-muted" style="font-size: 12;" />
+                                    <Label text="No. 9876 5432" class="text-white font-bold m-t-2" style="font-size: 14;" />
+                                </StackLayout>
+                                <StackLayout col="1">
+                                    <Label text="SuperPuntos" class="text-muted" style="font-size: 12;" />
+                                    <Label text="750 pts" class="text-yellow font-bold m-t-2" style="font-size: 14;" />
+                                </StackLayout>
+                            </GridLayout>
+                        </StackLayout>
+
+                        <Button text="CERRAR SESIÓN" tap="{{ onLogout }}" class="login-btn-submit" style="background-color: #ff3333; color: #ffffff;" />
+                    </StackLayout>
+                </ScrollView>
+            </GridLayout>
+
+            <!-- TAB 6: MÁS OPTIONS -->
+            <ScrollView visibility="{{ currentTab === 6 ? 'visible' : 'collapsed' }}">
+                <StackLayout class="p-10">
+                    <Label text="Configuraciones y Más" class="text-yellow font-bold text-center m-b-15" style="font-size: 20;" />
+
+                    <StackLayout class="p-10 m-b-10 bg-dark" style="border-radius: 6;" tap="{{ onMasChangeCity }}">
+                        <GridLayout columns="*, auto" class="p-10">
+                            <Label col="0" text="Cambiar Ciudad" class="text-white font-bold" style="font-size: 16;" />
+                            <Label col="1" text="▶" class="text-muted" />
+                        </GridLayout>
+                    </StackLayout>
+
+                    <StackLayout class="p-10 m-b-10 bg-dark" style="border-radius: 6;" tap="{{ onMasInfo }}">
+                        <GridLayout columns="*, auto" class="p-10">
+                            <Label col="0" text="Sobre Supercines Ecuador" class="text-white font-bold" style="font-size: 16;" />
+                            <Label col="1" text="▶" class="text-muted" />
+                        </GridLayout>
+                    </StackLayout>
+
+                    <StackLayout class="p-10 m-b-10 bg-dark" style="border-radius: 6;" tap="{{ onMasTerms }}">
+                        <GridLayout columns="*, auto" class="p-10">
+                            <Label col="0" text="Términos y Condiciones de Uso" class="text-white font-bold" style="font-size: 16;" />
+                            <Label col="1" text="▶" class="text-muted" />
+                        </GridLayout>
+                    </StackLayout>
+
+                    <StackLayout class="p-10 m-b-10 bg-dark" style="border-radius: 6;" tap="{{ onMasPrivacy }}">
+                        <GridLayout columns="*, auto" class="p-10">
+                            <Label col="0" text="Políticas de Privacidad" class="text-white font-bold" style="font-size: 16;" />
+                            <Label col="1" text="▶" class="text-muted" />
+                        </GridLayout>
+                    </StackLayout>
+
+                    <Label text="Versión de App: 5.4.1 (Mock)" class="text-center text-muted m-t-30" style="font-size: 11;" />
+                    <Label text="© 2026 Corporación El Rosado S.A." class="text-center text-muted" style="font-size: 11;" />
+                </StackLayout>
+            </ScrollView>
+
+        </GridLayout>
+
+        <!-- GLOBAL DROPDOWN MODAL OVERLAY (Taps selector inside cartelera, cines, or bar) -->
+        <AbsoluteLayout row="0" rowSpan="4" col="0" class="modal-overlay" visibility="{{ isCityModalVisible ? 'visible' : 'collapsed' }}" tap="{{ toggleCityModal }}">
+            <FlexboxLayout class="modal-wrapper" width="100%" height="100%">
+                <StackLayout class="modal-box" tap="onModalClick">
+                    <StackLayout class="modal-header">
+                        <Label text="Ciudad" class="modal-title" />
+                    </StackLayout>
+                    <ScrollView class="modal-scroll">
+                        <StackLayout>
+                            <Repeater items="{{ cities }}">
+                                <Repeater.itemsLayout>
+                                    <StackLayout />
+                                </Repeater.itemsLayout>
+                                <Repeater.itemTemplate>
+                                    <StackLayout class="city-item-row" tap="{{ $parents['Page'].bindingContext.selectCity }}" city="{{ $value }}">
+                                        <Label text="{{ $value }}" class="city-item-text" />
+                                        <StackLayout class="city-separator" />
+                                    </StackLayout>
+                                </Repeater.itemTemplate>
+                            </Repeater>
+                        </StackLayout>
+                    </ScrollView>
+                </StackLayout>
+            </FlexboxLayout>
+        </AbsoluteLayout>
+        
+    </GridLayout>
+</Page>

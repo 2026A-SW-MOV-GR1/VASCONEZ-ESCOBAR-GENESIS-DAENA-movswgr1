@@ -1,0 +1,152 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo" actionBarHidden="true">
+    <GridLayout rows="auto, auto, *, auto" columns="*">
+        
+        <!-- HEADER -->
+        <GridLayout row="0" columns="auto, *, auto" class="app-header" verticalAlignment="center">
+            <StackLayout col="0" orientation="horizontal" verticalAlignment="center" tap="{{ goBack }}">
+                <Label text="◀" class="header-action-btn" style="font-size: 16; margin-right: 5; text-align: center; vertical-align: middle;" />
+                <StackLayout class="header-logo-icon">
+                    <Label text="S" class="header-logo-text" />
+                </StackLayout>
+                <Label text="Película" class="header-title" />
+            </StackLayout>
+        </GridLayout>
+
+        <!-- TOP BAR MENU DECORATION (Static, matching original visual layout) -->
+        <GridLayout row="1" columns="*, *, *, *, *, *, *" class="tab-menu-bar">
+            <StackLayout col="0" tap="{{ navigateToCarteleraTab0 }}" class="tab-item tab-item-active">
+                <Label text="🎬" class="tab-icon" />
+                <Label text="Películas" class="tab-label" />
+                <StackLayout class="tab-active-indicator" />
+            </StackLayout>
+            <StackLayout col="1" tap="{{ navigateToCarteleraTab1 }}" class="tab-item">
+                <Label text="🏛️" class="tab-icon" />
+                <Label text="Cines" class="tab-label" />
+                <StackLayout class="tab-inactive-indicator" />
+            </StackLayout>
+            <StackLayout col="2" tap="{{ navigateToCarteleraTab2 }}" class="tab-item">
+                <Label text="🍿" class="tab-icon" />
+                <Label text="Bar" class="tab-label" />
+                <StackLayout class="tab-inactive-indicator" />
+            </StackLayout>
+            <StackLayout col="3" tap="{{ navigateToCarteleraTab3 }}" class="tab-item">
+                <Label text="🔴" class="tab-icon" />
+                <Label text="Puntos" class="tab-label" />
+                <StackLayout class="tab-inactive-indicator" />
+            </StackLayout>
+            <StackLayout col="4" tap="{{ navigateToCarteleraTab4 }}" class="tab-item">
+                <Label text="🛒" class="tab-icon" />
+                <Label text="Compras" class="tab-label" />
+                <StackLayout class="tab-inactive-indicator" />
+            </StackLayout>
+            <StackLayout col="5" tap="{{ navigateToCarteleraTab5 }}" class="tab-item">
+                <Label text="👤" class="tab-icon" />
+                <Label text="Ingresar" class="tab-label" />
+                <StackLayout class="tab-inactive-indicator" />
+            </StackLayout>
+            <StackLayout col="6" tap="{{ navigateToCarteleraTab6 }}" class="tab-item">
+                <Label text="•••" class="tab-icon" />
+                <Label text="Más" class="tab-label" />
+                <StackLayout class="tab-inactive-indicator" />
+            </StackLayout>
+        </GridLayout>
+
+        <!-- MAIN SCROLL VIEW -->
+        <ScrollView row="2" class="bg-dark">
+            <StackLayout>
+                <!-- Movie Top Info Card -->
+                <GridLayout columns="auto, *" class="detail-header-card">
+                    <!-- Left: Poster & City Badge -->
+                    <StackLayout col="0">
+                        <StackLayout class="detail-poster-container">
+                            <Image src="{{ movie.posterUrl }}" loadMode="async" stretch="aspectFill" class="movie-poster-img" />
+                            <Label text="{{ movie.label }}" class="{{ movie.label === 'PREVENTA' ? 'movie-banner movie-banner-preventa' : (movie.label === 'ESTRENO' ? 'movie-banner movie-banner-estreno' : 'movie-banner movie-banner-prox') }}" visibility="{{ movie.label ? 'visible' : 'collapsed' }}" verticalAlignment="bottom" />
+                        </StackLayout>
+                        
+                        <!-- City selector badge under poster -->
+                        <Button text="{{ selectedCity }}" tap="{{ toggleCityModal }}" class="city-badge-btn" style="width: 110; margin-top: 10;" />
+                    </StackLayout>
+
+                    <!-- Right: Metadata & Action buttons -->
+                    <StackLayout col="1" class="p-l-10">
+                        <Label text="{{ movie.title }}" class="detail-title-yellow" textWrap="true" />
+                        <Label text="{{ movie.englishTitle }}" class="text-white font-semibold m-b-5" style="font-size: 14;" textWrap="true" />
+                        
+                        <GridLayout columns="auto, *" rows="auto, auto, auto" class="m-b-15">
+                            <Label row="0" col="0" text="Idioma: " class="movie-detail-label" />
+                            <Label row="0" col="1" text="{{ movie.language }}" class="movie-detail-val" />
+
+                            <Label row="1" col="0" text="Duración: " class="movie-detail-label" />
+                            <Label row="1" col="1" text="{{ movie.duration }}" class="movie-detail-val" />
+
+                            <Label row="2" col="0" text="Censura: " class="movie-detail-label" />
+                            <Label row="2" col="1" text="{{ movie.rating }}" class="movie-detail-val" />
+                        </GridLayout>
+
+                        <GridLayout columns="*, *">
+                            <Button col="0" text="SINOPSIS >" tap="{{ openSynopsis }}" class="detail-btn-outline" />
+                            <Button col="1" text="COMPARTIR >" tap="{{ shareMovie }}" class="detail-btn-outline" />
+                        </GridLayout>
+                    </StackLayout>
+                </GridLayout>
+
+                <!-- Date Tabs -->
+                <GridLayout columns="*, *" class="date-tabs-container m-t-5">
+                    <StackLayout col="0" tap="{{ selectDateToday }}" class="{{ activeDateIndex === 0 ? 'date-tab-active p-10' : 'p-10' }}" verticalAlignment="center">
+                        <Label text="{{ showDateTodayText }}" class="date-tab" style="{{ activeDateIndex === 0 ? 'color: #ffffff;' : 'color: #888888;' }}" />
+                    </StackLayout>
+                    <StackLayout col="1" tap="{{ selectDateNext }}" class="{{ activeDateIndex === 1 ? 'date-tab-active p-10' : 'p-10' }}" verticalAlignment="center">
+                        <Label text="{{ showDateNextText }}" class="date-tab" style="{{ activeDateIndex === 1 ? 'color: #ffffff;' : 'color: #888888;' }}" />
+                    </StackLayout>
+                </GridLayout>
+
+                <!-- COMPLEX TITLE HEADER -->
+                <StackLayout class="schedule-header">
+                    <Label text="{{ 'COMPLEJO: ' + selectedCity }}" class="schedule-header-text" />
+                </StackLayout>
+
+                <!-- SCHEDULES LIST -->
+                <StackLayout>
+                    <Repeater items="{{ movie.schedules }}">
+                        <Repeater.itemsLayout>
+                            <StackLayout />
+                        </Repeater.itemsLayout>
+                        <Repeater.itemTemplate>
+                            <GridLayout columns="*, auto" class="schedule-row" tap="{{ $parents['Page'].bindingContext.onScheduleTap }}" scheduleTime="{{ time }}" scheduleRoom="{{ room }}">
+                                <Label col="0" text="{{ time + ' - ' + room }}" class="schedule-time-text" />
+                                <Label col="1" text="🛒" class="schedule-cart-icon" />
+                            </GridLayout>
+                        </Repeater.itemTemplate>
+                    </Repeater>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+
+        <!-- GLOBAL DROPDOWN MODAL OVERLAY -->
+        <AbsoluteLayout row="0" rowSpan="3" col="0" class="modal-overlay" visibility="{{ isCityModalVisible ? 'visible' : 'collapsed' }}" tap="{{ toggleCityModal }}">
+            <FlexboxLayout class="modal-wrapper" width="100%" height="100%">
+                <StackLayout class="modal-box" tap="onModalClick">
+                    <StackLayout class="modal-header">
+                        <Label text="Ciudad" class="modal-title" />
+                    </StackLayout>
+                    <ScrollView class="modal-scroll">
+                        <StackLayout>
+                            <Repeater items="{{ cities }}">
+                                <Repeater.itemsLayout>
+                                    <StackLayout />
+                                </Repeater.itemsLayout>
+                                <Repeater.itemTemplate>
+                                    <StackLayout class="city-item-row" tap="{{ $parents['Page'].bindingContext.selectCity }}" city="{{ $value }}">
+                                        <Label text="{{ $value }}" class="city-item-text" />
+                                        <StackLayout class="city-separator" />
+                                    </StackLayout>
+                                </Repeater.itemTemplate>
+                            </Repeater>
+                        </StackLayout>
+                    </ScrollView>
+                </StackLayout>
+            </FlexboxLayout>
+        </AbsoluteLayout>
+
+    </GridLayout>
+</Page>

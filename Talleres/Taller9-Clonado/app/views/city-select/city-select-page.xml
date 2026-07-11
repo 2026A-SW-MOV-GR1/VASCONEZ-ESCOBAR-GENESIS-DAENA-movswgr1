@@ -1,0 +1,59 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo" actionBarHidden="true" class="bg-blue">
+    <GridLayout rows="*" columns="*">
+        <!-- Main Layout -->
+        <ScrollView class="w-full h-full">
+            <StackLayout class="city-select-container">
+                <!-- Logo -->
+                <StackLayout class="logo-ticket m-t-30">
+                    <StackLayout class="logo-ticket-top">
+                        <Label text="SUPERCINES" class="logo-text-title" />
+                    </StackLayout>
+                    <StackLayout class="logo-ticket-bottom">
+                        <Label text="mucho más que un cine" class="logo-text-subtitle" />
+                    </StackLayout>
+                </StackLayout>
+
+                <!-- Prompt -->
+                <Label text="SELECCIONE SU CIUDAD" class="select-city-prompt" />
+
+                <!-- Spinner / Dropdown trigger -->
+                <GridLayout columns="*, auto" rows="auto, auto" tap="{{ toggleModal }}" class="dropdown-trigger">
+                    <Label col="0" text="{{ selectedCityText }}" class="dropdown-text" />
+                    <Label col="1" text="▼" class="dropdown-arrow" />
+                    <StackLayout row="1" colSpan="2" class="dropdown-underline" />
+                </GridLayout>
+
+                <!-- Continue Button -->
+                <Button text="CONTINUAR" tap="{{ onContinue }}" class="btn-continue" visibility="{{ isCitySelected ? 'visible' : 'collapsed' }}" />
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Custom Dropdown Modal Overlay -->
+        <AbsoluteLayout class="modal-overlay" visibility="{{ isModalVisible ? 'visible' : 'collapsed' }}" tap="{{ toggleModal }}">
+            <FlexboxLayout class="modal-wrapper" width="100%" height="100%">
+                <StackLayout class="modal-box" tap="onModalClick">
+                    <!-- Modal Header -->
+                    <StackLayout class="modal-header">
+                        <Label text="Ciudad" class="modal-title" />
+                    </StackLayout>
+                    <!-- Modal Body / City List -->
+                    <ScrollView class="modal-scroll">
+                        <StackLayout id="citiesList">
+                            <Repeater items="{{ cities }}">
+                                <Repeater.itemsLayout>
+                                    <StackLayout />
+                                </Repeater.itemsLayout>
+                                <Repeater.itemTemplate>
+                                    <StackLayout class="city-item-row" tap="selectCity">
+                                        <Label text="{{ $value }}" class="city-item-text" />
+                                        <StackLayout class="city-separator" />
+                                    </StackLayout>
+                                </Repeater.itemTemplate>
+                            </Repeater>
+                        </StackLayout>
+                    </ScrollView>
+                </StackLayout>
+            </FlexboxLayout>
+        </AbsoluteLayout>
+    </GridLayout>
+</Page>

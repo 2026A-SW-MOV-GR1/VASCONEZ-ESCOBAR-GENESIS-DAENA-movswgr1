@@ -1,0 +1,673 @@
+@import '@nativescript/theme/css/core.css';
+@import '@nativescript/theme/css/default.css';
+
+/* Global styles */
+Page {
+  background-color: #121212;
+  color: #ffffff;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.bg-blue {
+  background-color: #0173B9;
+}
+
+.bg-dark {
+  background-color: #121212;
+}
+
+.text-yellow {
+  color: #FED100;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.text-muted {
+  color: #b0b0b0;
+}
+
+/* Logo Ticket Widget */
+.logo-ticket {
+  width: 280;
+  border-width: 2;
+  border-color: #ffffff;
+  border-radius: 8;
+  margin: 20;
+  horizontal-align: center;
+  box-shadow: 0 4 6 rgba(0, 0, 0, 0.3);
+}
+
+.logo-ticket-top {
+  background-color: #0173B9;
+  padding: 15 10;
+  text-align: center;
+}
+
+.logo-text-title {
+  color: #FED100;
+  font-size: 36;
+  font-weight: 900;
+  font-style: italic;
+  text-align: center;
+  letter-spacing: 0.1;
+}
+
+.logo-ticket-bottom {
+  background-color: #ffffff;
+  padding: 4 10;
+}
+
+.logo-text-subtitle {
+  color: #000000;
+  font-size: 14;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 0.2;
+}
+
+/* Splash Page */
+.splash-container {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+/* City Select Page */
+.city-select-container {
+  padding: 20;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.select-city-prompt {
+  color: #ffffff;
+  font-size: 18;
+  font-weight: bold;
+  margin-top: 40;
+  margin-bottom: 30;
+  text-align: center;
+}
+
+.dropdown-trigger {
+  width: 80%;
+  margin-bottom: 40;
+  padding: 10 5;
+}
+
+.dropdown-text {
+  color: #ffffff;
+  font-size: 20;
+  text-align: left;
+}
+
+.dropdown-arrow {
+  color: #ffffff;
+  font-size: 14;
+  vertical-align: middle;
+}
+
+.dropdown-underline {
+  height: 2;
+  background-color: #ffffff;
+  margin-top: 8;
+}
+
+.btn-continue {
+  background-color: #FED100;
+  color: #000000;
+  font-size: 18;
+  font-weight: bold;
+  padding: 12 40;
+  border-radius: 4;
+  width: 80%;
+}
+
+/* Dropdown Modal Overlay */
+.modal-overlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-wrapper {
+  justify-content: center;
+  align-items: center;
+  padding: 40 20;
+}
+
+.modal-box {
+  width: 90%;
+  max-height: 80%;
+  background-color: #ffffff;
+  border-radius: 8;
+  overflow: hidden;
+  box-shadow: 0 10 25 rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  background-color: #1c1c1c;
+  padding: 15;
+  text-align: center;
+}
+
+.modal-title {
+  color: #FED100;
+  font-size: 20;
+  font-weight: bold;
+  text-align: center;
+}
+
+.modal-scroll {
+  height: 350;
+}
+
+.city-item-row {
+  padding: 15 20;
+  background-color: #ffffff;
+}
+
+.city-item-text {
+  color: #000000;
+  font-size: 18;
+  text-align: center;
+}
+
+.city-separator {
+  height: 1;
+  background-color: #e0e0e0;
+  margin-top: 10;
+}
+
+/* Navigation & Header */
+.app-header {
+  background-color: #0173B9;
+  height: 60;
+  padding: 0 10;
+}
+
+.header-logo-icon {
+  background-color: #0173B9;
+  border-width: 1.5;
+  border-color: #ffffff;
+  border-radius: 3;
+  width: 26;
+  height: 26;
+  margin-right: 8;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-logo-text {
+  color: #FED100;
+  font-size: 15;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.header-title {
+  color: #ffffff;
+  font-size: 20;
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+.header-action-btn {
+  color: #ffffff;
+  font-size: 22;
+  background-color: transparent;
+  border-color: transparent;
+  width: 44;
+  height: 44;
+}
+
+/* Tab Bar Menu */
+.tab-menu-bar {
+  background-color: #0173B9;
+  height: 55;
+  border-top-width: 1;
+  border-top-color: #00609c;
+}
+
+.tab-item {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5 0;
+}
+
+.tab-icon {
+  font-size: 20;
+  color: #d0e4f2;
+}
+
+.tab-label {
+  font-size: 9;
+  color: #d0e4f2;
+  margin-top: 2;
+}
+
+.tab-item-active .tab-icon {
+  color: #ffffff;
+}
+
+.tab-item-active .tab-label {
+  color: #ffffff;
+}
+
+.tab-active-indicator {
+  height: 3;
+  background-color: #ffffff;
+  width: 80%;
+  margin-top: 2;
+  border-radius: 1;
+}
+
+.tab-inactive-indicator {
+  height: 3;
+  background-color: transparent;
+  width: 80%;
+  margin-top: 2;
+}
+
+/* Content Layouts */
+.content-area {
+  background-color: #121212;
+}
+
+/* List Movie Card */
+.movie-list-card {
+  background-color: #1c1c1c;
+  margin: 4 8;
+  padding: 8;
+  border-radius: 4;
+}
+
+.movie-poster-container {
+  width: 90;
+  height: 135;
+  position: relative;
+  border-radius: 2;
+  overflow: hidden;
+}
+
+.movie-poster-img {
+  width: 100%;
+  height: 100%;
+}
+
+.movie-banner {
+  font-size: 9;
+  font-weight: bold;
+  color: #000000;
+  text-align: center;
+  padding: 2 4;
+  width: 100%;
+}
+
+.movie-banner-preventa {
+  background-color: #0173B9;
+  color: #ffffff;
+}
+
+.movie-banner-estreno {
+  background-color: #FED100;
+}
+
+.movie-banner-prox {
+  background-color: #e0e0e0;
+}
+
+.movie-title-yellow {
+  color: #FED100;
+  font-size: 15;
+  font-weight: bold;
+  margin-bottom: 2;
+}
+
+.movie-title-english {
+  color: #ffffff;
+  font-size: 13;
+  margin-bottom: 4;
+}
+
+.movie-detail-row {
+  margin-bottom: 2;
+}
+
+.movie-detail-label {
+  color: #888888;
+  font-size: 11;
+}
+
+.movie-detail-val {
+  color: #ffffff;
+  font-size: 11;
+}
+
+/* Grid Movie Card */
+.movie-grid-card {
+  background-color: #1c1c1c;
+  margin: 6;
+  border-radius: 4;
+  overflow: hidden;
+}
+
+.movie-grid-poster-container {
+  height: 140;
+  width: 100%;
+  position: relative;
+}
+
+.movie-grid-poster-img {
+  width: 100%;
+  height: 100%;
+}
+
+.movie-grid-title {
+  color: #ffffff;
+  font-size: 11;
+  text-align: center;
+  padding: 6 4;
+  height: 38;
+}
+
+/* Movie Detail View */
+.detail-header-card {
+  background-color: #1c1c1c;
+  padding: 12;
+  margin-bottom: 10;
+}
+
+.detail-poster-container {
+  width: 110;
+  height: 165;
+  border-radius: 4;
+  overflow: hidden;
+}
+
+.detail-title-yellow {
+  color: #FED100;
+  font-size: 18;
+  font-weight: bold;
+}
+
+.detail-btn-outline {
+  border-width: 1.5;
+  border-color: #FED100;
+  color: #FED100;
+  background-color: transparent;
+  font-size: 11;
+  font-weight: bold;
+  height: 35;
+  margin: 5;
+  border-radius: 2;
+  text-align: center;
+}
+
+.city-badge-btn {
+  background-color: #1c1c1c;
+  border-width: 1;
+  border-color: #333333;
+  color: #ffffff;
+  font-size: 14;
+  padding: 6 12;
+  border-radius: 4;
+  margin-top: 10;
+}
+
+.date-tabs-container {
+  background-color: #0d0d0d;
+  height: 40;
+  border-bottom-width: 1.5;
+  border-bottom-color: #FED100;
+}
+
+.date-tab {
+  color: #888888;
+  font-size: 13;
+  text-align: center;
+  font-weight: bold;
+}
+
+.date-tab-active {
+  color: #ffffff;
+  background-color: #1a1a1a;
+}
+
+.schedule-header {
+  background-color: #121212;
+  padding: 8 15;
+}
+
+.schedule-header-text {
+  color: #888888;
+  font-size: 12;
+  font-weight: bold;
+}
+
+.schedule-row {
+  background-color: #1a1a1a;
+  padding: 14 15;
+  border-bottom-width: 1;
+  border-bottom-color: #222222;
+}
+
+.schedule-time-text {
+  color: #ffffff;
+  font-size: 15;
+  font-weight: bold;
+}
+
+.schedule-cart-icon {
+  color: #ffffff;
+  font-size: 18;
+}
+
+/* Cinema View */
+.cinema-card {
+  background-color: #1c1c1c;
+  margin: 8;
+  border-radius: 6;
+  overflow: hidden;
+  box-shadow: 0 4 6 rgba(0,0,0,0.2);
+}
+
+.cinema-card-img {
+  width: 100%;
+  height: 150;
+}
+
+.cinema-info-container {
+  padding: 10;
+}
+
+.cinema-name {
+  color: #FED100;
+  font-size: 16;
+  font-weight: bold;
+}
+
+.cinema-address {
+  color: #b0b0b0;
+  font-size: 13;
+  margin-top: 4;
+}
+
+/* Bar View */
+.bar-cat-grid {
+  padding: 5;
+}
+
+.bar-cat-card {
+  background-color: #1c1c1c;
+  margin: 6;
+  border-radius: 6;
+  height: 85;
+  justify-content: center;
+  align-items: center;
+  border-width: 1;
+  border-color: #2c2c2c;
+}
+
+.bar-cat-card-active {
+  border-color: #FED100;
+  background-color: #262626;
+}
+
+.bar-cat-icon {
+  font-size: 26;
+  margin-bottom: 4;
+}
+
+.bar-cat-name {
+  font-size: 11;
+  color: #ffffff;
+  text-align: center;
+  font-weight: bold;
+}
+
+.bar-cat-card-active .bar-cat-name {
+  color: #FED100;
+}
+
+.bar-product-card {
+  background-color: #1c1c1c;
+  margin: 6 10;
+  padding: 10;
+  border-radius: 6;
+}
+
+.bar-product-img {
+  width: 80;
+  height: 80;
+  border-radius: 4;
+}
+
+.bar-product-name {
+  color: #ffffff;
+  font-size: 15;
+  font-weight: bold;
+}
+
+.bar-product-desc {
+  color: #888888;
+  font-size: 12;
+  margin-top: 2;
+}
+
+.bar-product-price {
+  color: #FED100;
+  font-size: 16;
+  font-weight: bold;
+  margin-top: 4;
+}
+
+/* Login Page */
+.login-container {
+  padding: 30 20;
+}
+
+.login-logo-spacing {
+  margin-bottom: 40;
+}
+
+.login-form-group {
+  margin-bottom: 15;
+}
+
+.login-input-label {
+  color: #888888;
+  font-size: 13;
+  margin-bottom: 4;
+}
+
+.login-input-field {
+  background-color: #1c1c1c;
+  color: #ffffff;
+  font-size: 16;
+  padding: 12 15;
+  border-radius: 4;
+  border-width: 1;
+  border-color: #333333;
+}
+
+.login-btn-submit {
+  background-color: #FED100;
+  color: #000000;
+  font-size: 16;
+  font-weight: bold;
+  padding: 12;
+  border-radius: 4;
+  margin-top: 25;
+  text-align: center;
+}
+
+.login-link-btn {
+  color: #0173B9;
+  font-size: 14;
+  background-color: transparent;
+  border-color: transparent;
+  margin-top: 15;
+  text-align: center;
+}
+
+/* Compras view */
+.compras-container {
+  padding: 40 20;
+  justify-content: center;
+  align-items: center;
+}
+
+.compras-icon {
+  font-size: 48;
+  color: #888888;
+  margin-bottom: 20;
+}
+
+.compras-msg {
+  color: #ffffff;
+  font-size: 16;
+  text-align: center;
+  margin-bottom: 30;
+}
+
+.compras-btn-login {
+  background-color: #0173B9;
+  color: #ffffff;
+  font-size: 16;
+  font-weight: bold;
+  padding: 12 30;
+  border-radius: 4;
+}
+
+/* Synopsis View */
+.synopsis-container {
+  padding: 15;
+}
+
+.synopsis-title {
+  font-size: 20;
+  color: #FED100;
+  font-weight: bold;
+}
+
+.synopsis-text {
+  font-size: 14;
+  color: #dddddd;
+  line-height: 20;
+  margin-top: 15;
+}
+
+.synopsis-btn-trailer {
+  background-color: #e50914;
+  color: #ffffff;
+  font-size: 15;
+  font-weight: bold;
+  padding: 10 20;
+  border-radius: 4;
+  margin-top: 15;
+}
